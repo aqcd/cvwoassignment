@@ -1,4 +1,4 @@
-{/* Supports creation of new Todos. */}
+/* Supports creation of new Todos. */
 
 import React from "react";
 import { Link } from "react-router-dom";
@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 class NewTodo extends React.Component {
   constructor(props) {
     super(props);
-    {/* Set default state of empty. */}
+    /* Set default state of empty. */
     this.state = {
       name: "",
       by: new Date(),
@@ -25,12 +25,12 @@ class NewTodo extends React.Component {
       .replace(/>/g, "&gt;");
   }
 
-  {/* When data field changes, update state accordingly. */}
+  /* When data field changes, update state accordingly. */
   onChange(event) {
     this.setState({ [event.target.name]: event.target.value });
   }
 
-  {/* When submitted, calls the POST method of /todos to invoke the CREATE controller action. */}
+  /* When submitted, calls the POST method of /todos to invoke the CREATE controller action. */
   onSubmit(event) {
     event.preventDefault();
     const url = "/todos";
@@ -60,7 +60,7 @@ class NewTodo extends React.Component {
       .catch(error => console.log(error.message));
   }
 
-  {/* Form for user to fill. */}
+  /* Form for user to fill. */
   render() {
     return (
       <div className="container mt-5">

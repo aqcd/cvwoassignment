@@ -1,4 +1,4 @@
-{/* Homepage. Mainly for a bit of README and potential expansion. */}
+/* Homepage. Mainly for a bit of README and potential expansion. */
 
 import React from "react";
 import { Link } from "react-router-dom";

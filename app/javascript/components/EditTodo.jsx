@@ -1,4 +1,4 @@
-{/* Supports editing of Todos. */}
+/* Supports editing of Todos. */
 
 import React from "react";
 import { Link } from "react-router-dom";
@@ -9,7 +9,7 @@ import Moment from 'moment';
 class EditTodo extends React.Component {
   constructor(props) {
     super(props);
-    {/* Set default state of empty. */}
+    /* Set default state of empty. */
     this.state = { todo: { name:"", by:new Date(), tag:"" } };
 
     this.onChange = this.onChange.bind(this);
@@ -17,7 +17,7 @@ class EditTodo extends React.Component {
     this.stripHtmlEntities = this.stripHtmlEntities.bind(this);
   }
 
-  {/* Fetch data of specific todo to pre-fill fields accordingly. */}
+  /* Fetch data of specific todo to pre-fill fields accordingly. */
   componentDidMount() {
     const {
       match: {
@@ -42,12 +42,12 @@ class EditTodo extends React.Component {
       .replace(/>/g, "&gt;");
   }
 
-  {/* When data field changes, update state accordingly. */}
+  /* When data field changes, update state accordingly. */
   onChange(event) {
     this.setState({ todo: update(this.state.todo, {[event.target.name]: { $set: event.target.value }})});
   }
 
-  {/* When submitted, calls the PUT method of /todos/:id to invoke the UPDATE controller action. */}
+  /* When submitted, calls the PUT method of /todos/:id to invoke the UPDATE controller action. */
   onSubmit(event) {
     event.preventDefault();
     const url = '/todos/' + this.state.todo.id;
@@ -77,7 +77,7 @@ class EditTodo extends React.Component {
       .catch(error => console.log(error.message));
   }
 
-  {/* Form for user to fill. */}
+  /* Form for user to fill. */
   render() {
     const { todo } = this.state;
     return (

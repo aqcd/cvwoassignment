@@ -1,4 +1,4 @@
-{/* Supports viewing and deletion of Todos. */}
+/* Supports viewing and deletion of Todos. */
 
 import React from "react";
 import { Link } from "react-router-dom";
@@ -12,7 +12,7 @@ class Todos extends React.Component {
     this.deleteTodo = this.deleteTodo.bind(this);
   }
 
-  {/* Fetch data of all todos to populate table accordingly. */}
+  /* Fetch data of all todos to populate table accordingly. */
   componentDidMount() {
     const url = "/todos";
     fetch(url)
@@ -26,7 +26,7 @@ class Todos extends React.Component {
       .catch(() => this.props.history.push("/"));
   }
 
-  {/* When clicked, calls the DELETE method of /todos/:id to invoke the DESTROY controller action. */}
+  /* When clicked, calls the DELETE method of /todos/:id to invoke the DESTROY controller action. */
   deleteTodo(todo) {
     const url = `/todos/` + todo.id;
     const token = document.querySelector('meta[name="csrf-token"]').content;
@@ -47,7 +47,7 @@ class Todos extends React.Component {
       .catch(error => console.log(error.message));
   }
 
-  {/* View of todo list. Renders alternate screen when no todos are found. */}
+  /* View of todo list. Renders alternate screen when no todos are found. */
   render() {
     const { todos } = this.state;
     const allTodos = todos.map((todo, index) => (
