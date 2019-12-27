@@ -7,8 +7,10 @@ class Todos extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      filter: "",
       todos: []
     };
+    this.handleChange = this.handleChange.bind(this);
     this.deleteTodo = this.deleteTodo.bind(this);
   }
 
@@ -47,10 +49,19 @@ class Todos extends React.Component {
       .catch(error => console.log(error.message));
   }
 
+  /* Handles filter search. */
+  handleChange(event) {
+    this.setState({ filter: event.target.value });
+  };
+
   /* View of todo list. Renders alternate screen when no todos are found. */
   render() {
-    const { todos } = this.state;
-    const allTodos = todos.map((todo, index) => (
+    const { filter, todos } = this.state;
+    const lowerFilter = filter.toLowerCase();
+    const filteredTodos = todos.filter(todo => {
+        return todo.tag.toLowerCase().includes(lowerFilter);
+    });
+    const allTodos = filteredTodos.map((todo, index) => (
       <div key={index} className="col-md-12">
         <div className="card mb-12">
           <div className="row card-body">
@@ -106,6 +117,9 @@ class Todos extends React.Component {
                     <Link to="/" className="btn custom-button">
                       Home
                     </Link>
+                </div>
+                <div className="text-left mb-3 col-md-6">
+                    <input value={filter} placeholder="Search by Tag" onChange={this.handleChange}/>
                 </div>
             </div>
             <div className="row">
