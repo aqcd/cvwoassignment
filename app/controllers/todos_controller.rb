@@ -2,7 +2,7 @@
 
 class TodosController < ApplicationController
   def index
-    todo = Todo.all.order(created_at: :desc)
+    todo = Todo.all.order(by: :asc)
     render json: todo
   end
 
