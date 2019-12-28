@@ -1,24 +1,43 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## CVWO Assignment AY2019/2020
 
-Things you may want to cover:
+### Personal Details
 
-* Ruby version
+Name: Shi Jing Lin
 
-* System dependencies
+Matriculation: A0201495J
 
-* Configuration
+### Dependencies
+1. Ruby 2.6.5
+1. Rails 6.0.2.1
+1. npm 13.2.0
+1. gem 3.1.2
+1. React 16.11.0
+1. psql 12.1
 
-* Database creation
+### Setup
+1. Create database.
+    ```
+    $ rails db:create
+    ```
 
-* Database initialization
+1. Migrate database.
+    ```
+    $ rails db:migrate
+    ```
 
-* How to run the test suite
+1. Seed database.
+    ```
+    $ rails db:seed
+    ```
 
-* Services (job queues, cache servers, search engines, etc.)
+1. Start the server.
+    ```
+    $ rails s --binding=127.0.0.1
+    ```
 
-* Deployment instructions
-
-* ...
+1. Go to URL.
+    ```
+    http://localhost:3000/
+    ```
