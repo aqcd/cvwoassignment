@@ -7,7 +7,8 @@ class Todos extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      filter: "",
+      filterName: "",
+      filterTag: "",
       todos: []
     };
     this.handleChange = this.handleChange.bind(this);
@@ -51,15 +52,16 @@ class Todos extends React.Component {
 
   /* Handles filter search. */
   handleChange(event) {
-    this.setState({ filter: event.target.value });
+    this.setState({ [event.target.name]: event.target.value });
   };
 
   /* View of todo list. Renders alternate screen when no todos are found. */
   render() {
-    const { filter, todos } = this.state;
-    const lowerFilter = filter.toLowerCase();
+    const { filterName, filterTag, todos } = this.state;
+    const lowerFilterName = filterName.toLowerCase();
+    const lowerFilterTag = filterTag.toLowerCase();
     const filteredTodos = todos.filter(todo => {
-        return todo.tag.toLowerCase().includes(lowerFilter);
+        return todo.tag.toLowerCase().includes(lowerFilterTag) && todo.name.toLowerCase().includes(lowerFilterName);
     });
     const allTodos = filteredTodos.map((todo, index) => (
       <div key={index} className="col-md-12">
@@ -118,8 +120,11 @@ class Todos extends React.Component {
                       Home
                     </Link>
                 </div>
-                <div className="text-left mb-3 col-md-6">
-                    <input value={filter} placeholder="Search by Tag" onChange={this.handleChange}/>
+                <div className="text-left mb-3 col-md-3">
+                    <input value={filterName} placeholder="Search by Name" name="filterName" onChange={this.handleChange}/>
+                </div>
+                <div className="text-left mb-3 col-md-3">
+                    <input value={filterTag} placeholder="Search by Tag" name="filterTag" onChange={this.handleChange}/>
                 </div>
             </div>
             <div className="row">
