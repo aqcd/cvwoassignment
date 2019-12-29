@@ -4,7 +4,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import update from 'immutability-helper';
-import Moment from 'moment';
 
 class EditTodo extends React.Component {
   constructor(props) {
