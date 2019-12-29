@@ -3,6 +3,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
+import Moment from 'moment';
+
 class Todos extends React.Component {
   constructor(props) {
     super(props);
@@ -71,7 +73,7 @@ class Todos extends React.Component {
                 <h5>{todo.name}</h5>
               </div>
               <div className="col-md-3 font-italic">
-                <p>by: {todo.by}</p>
+                <p>by: {Moment(todo.by).format('DD MMM YYYY')}</p>
               </div>
               <div className="col-md-3">
                 <p>Tag: {todo.tag}</p>
