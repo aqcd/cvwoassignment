@@ -29,6 +29,9 @@
 .secondary-color {
   color: #329CE3;
 }
+.overdue {
+  background-color: #FFAEAE !important;
+}
 .custom-button.btn {
   background-color: #329CE3;
   color: #FFF;

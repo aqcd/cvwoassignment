@@ -67,7 +67,7 @@ class Todos extends React.Component {
     });
     const allTodos = filteredTodos.map((todo, index) => (
       <div key={index} className="col-md-12">
-        <div className="card card-body mb-12">
+        <div className={new Moment().isAfter(Moment(todo.by), 'day') ? "card card-body overdue b-12" : "card card-body mb-12"}>
           <div className="row">
               <div className="card-title col-md-3">
                 <h5>{todo.name}</h5>
