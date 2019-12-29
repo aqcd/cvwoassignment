@@ -107,6 +107,9 @@ class Todos extends React.Component {
             <p className="lead font_primary-color">
               Don't push to tomorrow what you can do today.
             </p>
+            <p className="lead font_primary-color">
+              {new Moment().format('DD MMM YYYY')}
+            </p>
           </div>
         </section>
         <div className="py-5">
