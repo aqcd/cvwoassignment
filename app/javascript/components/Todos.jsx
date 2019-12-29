@@ -67,8 +67,8 @@ class Todos extends React.Component {
     });
     const allTodos = filteredTodos.map((todo, index) => (
       <div key={index} className="col-md-12">
-        <div className="card mb-12">
-          <div className="row card-body">
+        <div className="card card-body mb-12">
+          <div className="row">
               <div className="card-title col-md-3">
                 <h5>{todo.name}</h5>
               </div>
@@ -86,7 +86,7 @@ class Todos extends React.Component {
               </div>
           </div>
           {todo.details.length > 0 &&
-              <div className="card-body">
+              <div>
                 <p>{todo.details}</p>
               </div>
           }
