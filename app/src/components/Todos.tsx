@@ -1,11 +1,11 @@
 /* Supports viewing and deletion of Todos. */
 
-import React from "react";
+import * as React from "react";
 import { Link } from "react-router-dom";
 
-import Moment from 'moment';
+import * as Moment from 'moment';
 
-class Todos extends React.Component {
+class Todos extends React.Component<any,any> {
   constructor(props) {
     super(props);
     this.state = {
@@ -34,7 +34,7 @@ class Todos extends React.Component {
   /* When clicked, calls the DELETE method of /todos/:id to invoke the DESTROY controller action. */
   deleteTodo(todo) {
     const url = `/todos/` + todo.id;
-    const token = document.querySelector('meta[name="csrf-token"]').content;
+    const token = document.querySelector<HTMLInputElement>('meta[name="csrf-token"]').getAttribute('content');
     fetch(url, {
       method: "DELETE",
       headers: {
@@ -67,7 +67,7 @@ class Todos extends React.Component {
     });
     const allTodos = filteredTodos.map((todo, index) => (
       <div key={index} className="col-md-12">
-        <div className={new Moment().isAfter(Moment(todo.by), 'day') ? "card card-body overdue b-12" : "card card-body mb-12"}>
+        <div className={Moment().isAfter(Moment(todo.by), 'day') ? "card card-body overdue b-12" : "card card-body mb-12"}>
           <div className="row">
               <div className="card-title col-md-3">
                 <h5>{todo.name}</h5>
@@ -108,7 +108,7 @@ class Todos extends React.Component {
               Don't push to tomorrow what you can do today.
             </p>
             <p className="lead font_primary-color">
-              {new Moment().format('DD MMM YYYY')}
+              {Moment().format('DD MMM YYYY')}
             </p>
           </div>
         </section>

@@ -1,11 +1,11 @@
 /* Supports editing of Todos. */
 
-import React from "react";
+import * as React from "react";
 import { Link } from "react-router-dom";
 
-import update from 'immutability-helper';
+import update from "immutability-helper";
 
-class EditTodo extends React.Component {
+class EditTodo extends React.Component<any, any> {
   constructor(props) {
     super(props);
     /* Set default state of empty. */
@@ -57,7 +57,7 @@ class EditTodo extends React.Component {
 
     const body = { name, by, tag, details };
 
-    const token = document.querySelector('meta[name="csrf-token"]').content;
+    const token = document.querySelector<HTMLInputElement>('meta[name="csrf-token"]').getAttribute('content');
     fetch(url, {
       method: "PUT",
       headers: {
@@ -128,7 +128,6 @@ class EditTodo extends React.Component {
                 name="details"
                 id="todoDetails"
                 className="form-control"
-                rows="3"
                 value={todo.details}
                 onChange={this.onChange}
               />

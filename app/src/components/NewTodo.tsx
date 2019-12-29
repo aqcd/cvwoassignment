@@ -1,9 +1,9 @@
 /* Supports creation of new Todos. */
 
-import React from "react";
+import * as React from "react";
 import { Link } from "react-router-dom";
 
-class NewTodo extends React.Component {
+class NewTodo extends React.Component<any,any> {
   constructor(props) {
     super(props);
     /* Set default state of empty. */
@@ -41,7 +41,7 @@ class NewTodo extends React.Component {
 
     const body = { name, by, tag, details };
 
-    const token = document.querySelector('meta[name="csrf-token"]').content;
+    const token = document.querySelector<HTMLInputElement>('meta[name="csrf-token"]').getAttribute('content');
     fetch(url, {
       method: "POST",
       headers: {
@@ -108,7 +108,6 @@ class NewTodo extends React.Component {
                 name="details"
                 id="todoDetails"
                 className="form-control"
-                rows="3"
                 onChange={this.onChange}
               />
               <button type="submit" className="btn custom-button mt-3">

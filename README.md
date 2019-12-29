@@ -12,9 +12,11 @@ Matriculation: A0201495J
 1. Ruby 2.6.5
 1. Rails 6.0.2.1
 1. npm 13.2.0
+1. yarn 1.19.2
 1. gem 3.1.2
 1. React 16.11.0
 1. psql 12.1
+1. TypeScript 3.7.4
 
 ### Setup
 1. Install dependencies.
