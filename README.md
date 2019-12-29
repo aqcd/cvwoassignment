@@ -17,6 +17,11 @@ Matriculation: A0201495J
 1. psql 12.1
 
 ### Setup
+1. Install dependencies.
+    ```
+    $ npm install
+    ```
+   
 1. Create database.
     ```
     $ rails db:create
