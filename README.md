@@ -24,11 +24,6 @@ Matriculation: A0201495J
     $ yarn install
     ```
    
-1. Compile TypeScript.
-    ```
-    $ yarn tsc -p app/
-    ``` 
-   
 1. Create database.
     ```
     $ rails db:create
@@ -43,6 +38,11 @@ Matriculation: A0201495J
     ```
     $ rails db:seed
     ```
+   
+1. Compile TypeScript.
+   ```
+   $ yarn tsc -p app/
+   ``` 
 
 1. Start the server.
     ```
