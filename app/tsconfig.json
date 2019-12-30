@@ -6,7 +6,8 @@
     "moduleResolution": "Node",
     "jsx": "react",
     "target": "es5",
-    "allowJs": true
+    "allowJs": true,
+    "checkJs": true
   },
   "include": [
     "src"

@@ -1,12 +1,36 @@
 /* Supports editing of Todos. */
 
 import * as React from "react";
+import { History, LocationState } from "history";
 import { Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, RouteComponentProps } from "react-router-dom";
+
+import * as Moment from 'moment';
 
 import update from "immutability-helper";
 
-class EditTodo extends React.Component<any, any> {
-  constructor(props) {
+interface MatchParams {
+    id?: string;
+}
+
+interface EditTodoProps extends RouteComponentProps<MatchParams> {
+    history: History<LocationState>;
+}
+
+interface Todo {
+    id?: number;
+    name: string;
+    by: Date;
+    tag: string;
+    details?: string;
+}
+
+interface EditTodoState {
+    todo: Todo;
+}
+
+class EditTodo extends React.Component<EditTodoProps, EditTodoState> {
+  constructor(props: EditTodoProps) {
     super(props);
     /* Set default state of empty. */
     this.state = { todo: { name:"", by:new Date(), tag:"" } };
@@ -14,6 +38,12 @@ class EditTodo extends React.Component<any, any> {
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.stripHtmlEntities = this.stripHtmlEntities.bind(this);
+  }
+
+  stripHtmlEntities(str: string) {
+    return String(str)
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
   }
 
   /* Fetch data of specific todo to pre-fill fields accordingly. */
@@ -35,15 +65,10 @@ class EditTodo extends React.Component<any, any> {
       .catch(() => this.props.history.push("/todos"));
   }
 
-  stripHtmlEntities(str) {
-    return String(str)
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;");
-  }
-
   /* When data field changes, update state accordingly. */
-  onChange(event) {
-    this.setState({ todo: update(this.state.todo, {[event.target.name]: { $set: event.target.value }})});
+  onChange = (field: string) => (event) => {
+    this.setState({ todo: update(this.state.todo, { [field]: { $set: event.target.value }})});
+    /* this.setState({ [field]: event.target.value } as Pick<EditTodoState, any>); */
   }
 
   /* When submitted, calls the PUT method of /todos/:id to invoke the UPDATE controller action. */
@@ -73,7 +98,7 @@ class EditTodo extends React.Component<any, any> {
         throw new Error("Network response error.");
       })
       .then(response => this.props.history.push(`/todos`))
-      .catch(error => console.log(error.message));
+      .catch((error: Error) => console.log(error.message));
   }
 
   /* Form for user to fill. */
@@ -96,7 +121,7 @@ class EditTodo extends React.Component<any, any> {
                   className="form-control"
                   value={todo.name}
                   required
-                  onChange={this.onChange}
+                  onChange={this.onChange('name')}
                 />
               </div>
               <div className="form-group">
@@ -106,9 +131,9 @@ class EditTodo extends React.Component<any, any> {
                   name="by"
                   id="todoBy"
                   className="form-control"
-                  value={todo.by}
+                  value={Moment(todo.by).format('YYYY-MM-DD')}
                   required
-                  onChange={this.onChange}
+                  onChange={this.onChange('by')}
                 />
               </div>
               <div className="form-group">
@@ -120,7 +145,7 @@ class EditTodo extends React.Component<any, any> {
                   className="form-control"
                   value={todo.tag}
                   required
-                  onChange={this.onChange}
+                  onChange={this.onChange('tag')}
                 />
               </div>
               <label htmlFor="todoDetails">Details (Optional)</label>
@@ -129,7 +154,7 @@ class EditTodo extends React.Component<any, any> {
                 id="todoDetails"
                 className="form-control"
                 value={todo.details}
-                onChange={this.onChange}
+                onChange={this.onChange('details')}
               />
               <button type="submit" className="btn custom-button mt-3">
                 Edit Todo

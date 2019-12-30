@@ -1,13 +1,25 @@
 /* Supports creation of new Todos. */
 
 import * as React from "react";
+import { History, LocationState } from "history";
 import { Link } from "react-router-dom";
 
-class NewTodo extends React.Component<any,any> {
-  constructor(props) {
+interface NewTodoProps {
+    history: History<LocationState>;
+}
+
+interface NewTodoState {
+    name: string;
+    by: Date;
+    tag: string;
+    details?: string;
+}
+
+class NewTodo extends React.Component<NewTodoProps, NewTodoState> {
+  constructor(props: NewTodoProps) {
     super(props);
     /* Set default state of empty. */
-    this.state = {
+    this.state  = {
       name: "",
       by: new Date(),
       tag: "",
@@ -19,15 +31,15 @@ class NewTodo extends React.Component<any,any> {
     this.stripHtmlEntities = this.stripHtmlEntities.bind(this);
   }
 
-  stripHtmlEntities(str) {
+  stripHtmlEntities(str: string) {
     return String(str)
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;");
   }
 
   /* When data field changes, update state accordingly. */
-  onChange(event) {
-    this.setState({ [event.target.name]: event.target.value });
+  onChange = (field: string) => (event) => {
+    this.setState({ [field]: event.target.value } as Pick<NewTodoState, any>);
   }
 
   /* When submitted, calls the POST method of /todos to invoke the CREATE controller action. */
@@ -57,7 +69,7 @@ class NewTodo extends React.Component<any,any> {
         throw new Error("Network response error.");
       })
       .then(response => this.props.history.push(`/todos`))
-      .catch(error => console.log(error.message));
+      .catch((error: Error) => console.log(error.message));
   }
 
   /* Form for user to fill. */
@@ -78,7 +90,7 @@ class NewTodo extends React.Component<any,any> {
                   id="todoName"
                   className="form-control"
                   required
-                  onChange={this.onChange}
+                  onChange={this.onChange('name')}
                 />
               </div>
               <div className="form-group">
@@ -89,7 +101,7 @@ class NewTodo extends React.Component<any,any> {
                   id="todoBy"
                   className="form-control"
                   required
-                  onChange={this.onChange}
+                  onChange={this.onChange('by')}
                 />
               </div>
               <div className="form-group">
@@ -100,7 +112,7 @@ class NewTodo extends React.Component<any,any> {
                   id="todoTag"
                   className="form-control"
                   required
-                  onChange={this.onChange}
+                  onChange={this.onChange('tag')}
                 />
               </div>
               <label htmlFor="todoDetails">Details (Optional)</label>
@@ -108,7 +120,7 @@ class NewTodo extends React.Component<any,any> {
                 name="details"
                 id="todoDetails"
                 className="form-control"
-                onChange={this.onChange}
+                onChange={this.onChange('details')}
               />
               <button type="submit" className="btn custom-button mt-3">
                 Create Todo

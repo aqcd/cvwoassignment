@@ -1,19 +1,39 @@
 /* Supports viewing and deletion of Todos. */
 
 import * as React from "react";
+import { History, LocationState } from "history";
 import { Link } from "react-router-dom";
 
 import * as Moment from 'moment';
 
-class Todos extends React.Component<any,any> {
-  constructor(props) {
+interface TodoProps {
+    history: History<LocationState>;
+}
+
+interface Todo {
+    id: number;
+    name: string;
+    by: Date;
+    tag: string;
+    details?: string;
+}
+
+interface TodoState {
+    filterName: string;
+    filterTag: string;
+    todos: Todo[];
+}
+
+class Todos extends React.Component<TodoProps, TodoState> {
+  constructor(props: TodoProps) {
     super(props);
     this.state = {
       filterName: "",
       filterTag: "",
       todos: []
     };
-    this.handleChange = this.handleChange.bind(this);
+    this.handleNameSearchChange = this.handleNameSearchChange.bind(this);
+    this.handleTagSearchChange = this.handleTagSearchChange.bind(this);
     this.deleteTodo = this.deleteTodo.bind(this);
   }
 
@@ -32,7 +52,7 @@ class Todos extends React.Component<any,any> {
   }
 
   /* When clicked, calls the DELETE method of /todos/:id to invoke the DESTROY controller action. */
-  deleteTodo(todo) {
+  deleteTodo(todo: Todo) {
     const url = `/todos/` + todo.id;
     const token = document.querySelector<HTMLInputElement>('meta[name="csrf-token"]').getAttribute('content');
     fetch(url, {
@@ -49,12 +69,16 @@ class Todos extends React.Component<any,any> {
         throw new Error("Network response error.");
       })
       .then(() => window.location.reload())
-      .catch(error => console.log(error.message));
+      .catch((error: Error) => console.log(error.message));
   }
 
   /* Handles filter search. */
-  handleChange(event) {
-    this.setState({ [event.target.name]: event.target.value });
+  handleNameSearchChange(event) {
+    this.setState({ filterName : event.target.value });
+  };
+
+  handleTagSearchChange(event) {
+    this.setState({ filterTag : event.target.value });
   };
 
   /* View of todo list. Renders alternate screen when no todos are found. */
@@ -62,10 +86,10 @@ class Todos extends React.Component<any,any> {
     const { filterName, filterTag, todos } = this.state;
     const lowerFilterName = filterName.toLowerCase();
     const lowerFilterTag = filterTag.toLowerCase();
-    const filteredTodos = todos.filter(todo => {
+    const filteredTodos = todos.filter((todo: Todo) => {
         return todo.tag.toLowerCase().includes(lowerFilterTag) && todo.name.toLowerCase().includes(lowerFilterName);
     });
-    const allTodos = filteredTodos.map((todo, index) => (
+    const allTodos = filteredTodos.map((todo: Todo, index: number) => (
       <div key={index} className="col-md-12">
         <div className={Moment().isAfter(Moment(todo.by), 'day') ? "card card-body overdue b-12" : "card card-body mb-12"}>
           <div className="row">
@@ -126,10 +150,10 @@ class Todos extends React.Component<any,any> {
                     </Link>
                 </div>
                 <div className="text-left mb-3 col-md-3">
-                    <input value={filterName} placeholder="Search by Name" name="filterName" onChange={this.handleChange}/>
+                    <input value={filterName} placeholder="Search by Name" name="filterName" onChange={this.handleNameSearchChange}/>
                 </div>
                 <div className="text-left mb-3 col-md-3">
-                    <input value={filterTag} placeholder="Search by Tag" name="filterTag" onChange={this.handleChange}/>
+                    <input value={filterTag} placeholder="Search by Tag" name="filterTag" onChange={this.handleTagSearchChange}/>
                 </div>
             </div>
             <div className="row">
