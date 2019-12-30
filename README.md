@@ -21,8 +21,13 @@ Matriculation: A0201495J
 ### Setup
 1. Install dependencies.
     ```
-    $ npm install
+    $ yarn install
     ```
+   
+1. Compile TypeScript.
+    ```
+    $ yarn tsc -p app/
+    ``` 
    
 1. Create database.
     ```
