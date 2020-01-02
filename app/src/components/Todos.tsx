@@ -54,14 +54,16 @@ class Todos extends React.Component<TodoProps, TodoState> {
   /* When clicked, calls the DELETE method of /todos/:id to invoke the DESTROY controller action. */
   deleteTodo(todo: Todo) {
     const url = `/todos/` + todo.id;
-    const token = document.querySelector<HTMLInputElement>('meta[name="csrf-token"]').getAttribute('content');
-    fetch(url, {
+    const token = document.querySelector<HTMLInputElement>('meta[name="csrf-token"]')!.getAttribute('content');
+    const parsedToken = token == null ? "" : token;
+    let headers = new Headers();
+    headers.append('X-CSRF-Token', parsedToken);
+    headers.append('Content-Type', "application/json");
+    let params: RequestInit = {
       method: "DELETE",
-      headers: {
-        "X-CSRF-Token": token,
-        "Content-Type": "application/json"
-      }
-    })
+      headers
+    }
+    fetch(url, params)
       .then(response => {
         if (response.ok) {
           return response.json();
@@ -109,7 +111,7 @@ class Todos extends React.Component<TodoProps, TodoState> {
                 <button type="button" className="btn-link" onClick={() => this.deleteTodo(todo)}> Delete </button>
               </div>
           </div>
-          {todo.details.length > 0 &&
+          {todo.details &&
               <div>
                 <p>{todo.details}</p>
               </div>

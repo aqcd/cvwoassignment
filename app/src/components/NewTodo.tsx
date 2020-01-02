@@ -47,19 +47,17 @@ class NewTodo extends React.Component<NewTodoProps, NewTodoState> {
     event.preventDefault();
     const url = "/todos";
     const { name, by, tag, details } = this.state;
-
     if (name.length == 0 || tag.length == 0)
       return;
-
     const body = { name, by, tag, details };
-
-    const token = document.querySelector<HTMLInputElement>('meta[name="csrf-token"]').getAttribute('content');
+    const token = document.querySelector<HTMLInputElement>('meta[name="csrf-token"]')!.getAttribute('content');
+    const parsedToken = token == null ? "" : token;
+    let headers = new Headers();
+    headers.append('X-CSRF-Token', parsedToken);
+    headers.append('Content-Type', "application/json");
     fetch(url, {
       method: "POST",
-      headers: {
-        "X-CSRF-Token": token,
-        "Content-Type": "application/json"
-      },
+      headers,
       body: JSON.stringify(body)
     })
       .then(response => {
