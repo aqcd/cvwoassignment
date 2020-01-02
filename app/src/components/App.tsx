@@ -1,4 +1,6 @@
 import * as React from "react";
 import Routes from "../routes/Index";
 
-export default props => <>{Routes}</>;
+interface AppProps { }
+
+export default (props: AppProps) => <>{Routes}</>;

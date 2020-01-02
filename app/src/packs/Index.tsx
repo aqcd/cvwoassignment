@@ -1,6 +1,6 @@
 import * as React from "react";
 import { render } from "react-dom";
-import $ from 'jquery';
+import * as $ from 'jquery';
 import Popper from 'popper.js';
 import App from "../components/App";
 import 'bootstrap/dist/js/bootstrap.bundle.min';

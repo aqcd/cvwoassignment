@@ -73,11 +73,11 @@ class Todos extends React.Component<TodoProps, TodoState> {
   }
 
   /* Handles filter search. */
-  handleNameSearchChange(event) {
+  handleNameSearchChange(event: React.ChangeEvent<HTMLInputElement>) {
     this.setState({ filterName : event.target.value });
   };
 
-  handleTagSearchChange(event) {
+  handleTagSearchChange(event: React.ChangeEvent<HTMLInputElement>) {
     this.setState({ filterTag : event.target.value });
   };
 

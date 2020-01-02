@@ -38,12 +38,12 @@ class NewTodo extends React.Component<NewTodoProps, NewTodoState> {
   }
 
   /* When data field changes, update state accordingly. */
-  onChange = (field: string) => (event) => {
+  onChange = (field: string) => (event: React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ [field]: event.target.value } as Pick<NewTodoState, any>);
   }
 
   /* When submitted, calls the POST method of /todos to invoke the CREATE controller action. */
-  onSubmit(event) {
+  onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const url = "/todos";
     const { name, by, tag, details } = this.state;

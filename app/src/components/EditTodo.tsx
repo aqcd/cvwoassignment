@@ -66,13 +66,13 @@ class EditTodo extends React.Component<EditTodoProps, EditTodoState> {
   }
 
   /* When data field changes, update state accordingly. */
-  onChange = (field: string) => (event) => {
+  onChange = (field: string) => (event: React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ todo: update(this.state.todo, { [field]: { $set: event.target.value }})});
     /* this.setState({ [field]: event.target.value } as Pick<EditTodoState, any>); */
   }
 
   /* When submitted, calls the PUT method of /todos/:id to invoke the UPDATE controller action. */
-  onSubmit(event) {
+  onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const url = '/todos/' + this.state.todo.id;
     const { name, by, tag, details } = this.state.todo;
