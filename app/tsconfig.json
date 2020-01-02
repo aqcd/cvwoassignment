@@ -6,8 +6,6 @@
     "moduleResolution": "Node",
     "jsx": "react",
     "target": "es5",
-    "allowJs": true,
-    "checkJs": true,
     "noImplicitAny": true,
     "strict": true
   },
