@@ -12,5 +12,6 @@
     by: DateTime.new(2020, 12, 31),
     tag: 'Example',
     details: 'Sample Todo'
+    completed: false
   )
 end

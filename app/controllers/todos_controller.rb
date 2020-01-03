@@ -40,7 +40,7 @@ class TodosController < ApplicationController
   private
 
   def todo_params
-    params.permit(:name, :by, :tag, :details)
+    params.permit(:name, :by, :tag, :details, :completed)
   end
 
   def todo
