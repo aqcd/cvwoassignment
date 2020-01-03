@@ -23,6 +23,7 @@ interface Todo {
     by: Date;
     tag: string;
     details?: string;
+    completed: boolean;
 }
 
 interface EditTodoState {
@@ -33,7 +34,7 @@ class EditTodo extends React.Component<EditTodoProps, EditTodoState> {
   constructor(props: EditTodoProps) {
     super(props);
     /* Set default state of empty. */
-    this.state = { todo: { name:"", by:new Date(), tag:"" } };
+    this.state = { todo: { name:"", by:new Date(), tag:"", completed: false } };
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);

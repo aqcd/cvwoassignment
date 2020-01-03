@@ -13,6 +13,7 @@ interface NewTodoState {
     by: Date;
     tag: string;
     details?: string;
+    completed: boolean;
 }
 
 class NewTodo extends React.Component<NewTodoProps, NewTodoState> {
@@ -23,7 +24,8 @@ class NewTodo extends React.Component<NewTodoProps, NewTodoState> {
       name: "",
       by: new Date(),
       tag: "",
-      details: ""
+      details: "",
+      completed: false
     };
 
     this.onChange = this.onChange.bind(this);
@@ -46,10 +48,10 @@ class NewTodo extends React.Component<NewTodoProps, NewTodoState> {
   onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const url = "/todos";
-    const { name, by, tag, details } = this.state;
+    const { name, by, tag, details, completed } = this.state;
     if (name.length == 0 || tag.length == 0)
       return;
-    const body = { name, by, tag, details };
+    const body = { name, by, tag, details, completed };
     const token = document.querySelector<HTMLInputElement>('meta[name="csrf-token"]')!.getAttribute('content');
     const parsedToken = token == null ? "" : token;
     let headers = new Headers();

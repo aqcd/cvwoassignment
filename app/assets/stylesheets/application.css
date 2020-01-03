@@ -29,6 +29,10 @@
 .secondary-color {
   color: #329CE3;
 }
+.complete {
+  background-color: #30E050 !important;
+  text-decoration: line-through;
+}
 .overdue {
   background-color: #FFAEAE !important;
 }
@@ -55,4 +59,7 @@
   height: 100%;
   width: 100%;
   opacity: 0.4;
+}
+.icon {
+  margin: 6px 10px 6px 0;
 }

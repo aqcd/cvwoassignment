@@ -16,6 +16,7 @@ interface Todo {
     by: Date;
     tag: string;
     details?: string;
+    completed: boolean;
 }
 
 interface TodoState {
@@ -34,6 +35,7 @@ class Todos extends React.Component<TodoProps, TodoState> {
     };
     this.handleNameSearchChange = this.handleNameSearchChange.bind(this);
     this.handleTagSearchChange = this.handleTagSearchChange.bind(this);
+    this.toggleComplete = this.toggleComplete.bind(this);
     this.deleteTodo = this.deleteTodo.bind(this);
   }
 
@@ -83,6 +85,31 @@ class Todos extends React.Component<TodoProps, TodoState> {
     this.setState({ filterTag : event.target.value });
   };
 
+  /* Toggles complete state of todo. */
+  toggleComplete(todo: Todo) {
+    const url = '/todos/' + todo.id;
+    const completed = !todo.completed;
+    var body = { completed };
+    const token = document.querySelector<HTMLInputElement>('meta[name="csrf-token"]')!.getAttribute('content');
+    const parsedToken = token == null ? "" : token;
+    let headers = new Headers();
+    headers.append('X-CSRF-Token', parsedToken);
+    headers.append('Content-Type', "application/json");
+    fetch(url, {
+      method: "PATCH",
+      headers,
+      body: JSON.stringify(body)
+    })
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error("Network response error.");
+      })
+      .then(response => window.location.reload())
+      .catch((error: Error) => console.log(error.message));
+  }
+
   /* View of todo list. Renders alternate screen when no todos are found. */
   render() {
     const { filterName, filterTag, todos } = this.state;
@@ -93,22 +120,26 @@ class Todos extends React.Component<TodoProps, TodoState> {
     });
     const allTodos = filteredTodos.map((todo: Todo, index: number) => (
       <div key={index} className="col-md-12">
-        <div className={Moment().isAfter(Moment(todo.by), 'day') ? "card card-body overdue b-12" : "card card-body mb-12"}>
+        <div className={todo.completed ? "card card-body complete b-12" : Moment().isAfter(Moment(todo.by), 'day') ?
+                "card card-body overdue b-12" : "card card-body mb-12"}>
           <div className="row">
               <div className="card-title col-md-3">
                 <h5>{todo.name}</h5>
               </div>
-              <div className="col-md-3 font-italic">
+              <div className="col-md-2 font-italic">
                 <p>by: {Moment(todo.by).format('DD MMM YYYY')}</p>
               </div>
               <div className="col-md-3">
-                <p>Tag: {todo.tag}</p>
+                <p>Tag: {todo.tag} </p>
               </div>
               <div className="col-md-1">
-                <Link to={`/todo/${todo.id}/edit`} className="btn-link"> Edit </Link>
+                <Link to={`/todo/${todo.id}/edit`} className="btn custom-button"> Modify </Link>
               </div>
               <div className="col-md-1">
-                <button type="button" className="btn-link" onClick={() => this.deleteTodo(todo)}> Delete </button>
+                <button type="button" className="btn custom-button" onClick={() => this.deleteTodo(todo)}> Delete </button>
+              </div>
+              <div className="col-md-1">
+                <button type="button" className="btn custom-button" onClick={() => this.toggleComplete(todo)}> Toggle </button>
               </div>
           </div>
           {todo.details &&
