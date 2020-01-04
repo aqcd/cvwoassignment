@@ -30,11 +30,11 @@
   color: #329CE3;
 }
 .complete {
-  background-color: #30E050 !important;
+  background-color: #A0F0A0 !important;
   text-decoration: line-through;
 }
 .overdue {
-  background-color: #FFAEAE !important;
+  background-color: #F0C0C0 !important;
 }
 .custom-button.btn {
   background-color: #329CE3;
