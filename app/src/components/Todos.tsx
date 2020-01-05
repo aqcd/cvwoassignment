@@ -46,7 +46,7 @@ class Todos extends React.Component<DefProps, IState> {
         return dispatch({ type: ActionType.INIT, todoArray: todoJson });
       })
       .then(() => dispatch({ type: ActionType.GET_FILTER }))
-      .then(() => this.setState({ todosFilter: this.props.todosFilter } as Pick<IState, any>));
+      .then(() => this.setState({ todosFilter: this.props.filterState } as Pick<IState, any>));
   }
 
   /* When clicked, calls the DELETE method of /todos/:id to invoke the DESTROY controller action. */
@@ -73,7 +73,7 @@ class Todos extends React.Component<DefProps, IState> {
       .then(todoJson => {
         return dispatch({ type: ActionType.DELETE, todoData: todoJson });
       })
-      .then(() => window.location.reload());
+      .then(response => window.location.reload());
   }
 
   /* Handles filter search. */
@@ -123,7 +123,7 @@ class Todos extends React.Component<DefProps, IState> {
   /* View of todo list. Renders alternate screen when no todos are found. */
   render() {
     const { filterName, filterTag, todosFilter } = this.state;
-    const { todos } = this.props.todos;
+    const { todos } = this.props.todoState;
     const lowerFilterName = filterName.toLowerCase();
     const lowerFilterTag = filterTag.toLowerCase();
     const filteredByCompletionTodos = todos.filter((todo: Todo) => {
@@ -234,7 +234,8 @@ const structuredSelector = createStructuredSelector({
 
 const mapStateToProps = (state: CompState) => {
   return {
-    todos: state.todos
+    todoState: state.todos,
+    filterState: state.filter
   }
 };
 

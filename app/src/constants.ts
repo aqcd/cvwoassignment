@@ -14,10 +14,9 @@ export interface DefState {
     todo: Todo;
 }
 
-/* Somehow cannot be refactored without causing a TypeError... (same for MatchProps) */
 export interface DefProps {
-    todos: TodoState;
-    todosFilter: FilterState;
+    todoState: TodoState;
+    filterState: FilterState;
     dispatch: Function;
     history: History<LocationState>;
 }
@@ -27,8 +26,8 @@ interface MatchParams {
 }
 
 export interface MatchProps extends RouteComponentProps<MatchParams> {
-    todos: TodoState;
-    todosFilter: FilterState;
+    todoState: TodoState;
+    filterState: FilterState;
     dispatch: Function;
     history: History<LocationState>;
 }

@@ -36,8 +36,8 @@ class EditTodo extends React.Component<MatchProps, DefState> {
     } = this.props;
     const { dispatch } = this.props;
     dispatch({ type: ActionType.GET });
-    const index = this.props.todos.todos.findIndex(todo => todo.id.toString() === id!.toString());
-    this.setState({ todo: this.props.todos.todos[index] })
+    const index = this.props.todoState.todos.findIndex(todo => todo.id.toString() === id!.toString());
+    this.setState({ todo: this.props.todoState.todos[index] })
   }
 
   /* When data field changes, update state accordingly. */
@@ -149,7 +149,8 @@ class EditTodo extends React.Component<MatchProps, DefState> {
 
 const mapStateToProps = (state: CompState) => {
   return {
-    todos: state.todos
+    todoState: state.todos,
+    filterState: state.filter
   }
 };
 
