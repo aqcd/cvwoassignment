@@ -7,10 +7,10 @@ import { Link } from "react-router-dom";
 
 import * as Moment from 'moment';
 
-import { ActionType, ActionDispatch, Todo, TodosFilter, DefProps, AppState } from '../constants';
+import { ActionType, ActionDispatch, Todo, TodosFilter, DefProps, CompState } from '../constants';
 
 interface IState {
-    todosFilter: TodosFilter;
+    todosFilter: TodosFilter,
     filterName: string;
     filterTag: string;
 }
@@ -44,7 +44,9 @@ class Todos extends React.Component<DefProps, IState> {
       .catch(() => this.props.history.push("/"))
       .then(todoJson => {
         return dispatch({ type: ActionType.INIT, todoArray: todoJson });
-      });
+      })
+      .then(() => dispatch({ type: ActionType.GET_FILTER }))
+      .then(() => this.setState({ todosFilter: this.props.todosFilter } as Pick<IState, any>));
   }
 
   /* When clicked, calls the DELETE method of /todos/:id to invoke the DESTROY controller action. */
@@ -84,6 +86,8 @@ class Todos extends React.Component<DefProps, IState> {
   };
 
   handleTodoFilterChange(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    const { dispatch } = this.props;
+    dispatch({ type: ActionType.FILTER, filter: (event.target as HTMLButtonElement).value });
     this.setState({ todosFilter : (event.target as HTMLButtonElement).value } as Pick<IState, any>);
   };
 
@@ -119,7 +123,7 @@ class Todos extends React.Component<DefProps, IState> {
   /* View of todo list. Renders alternate screen when no todos are found. */
   render() {
     const { filterName, filterTag, todosFilter } = this.state;
-    const { todos } = this.props;
+    const { todos } = this.props.todos;
     const lowerFilterName = filterName.toLowerCase();
     const lowerFilterTag = filterTag.toLowerCase();
     const filteredByCompletionTodos = todos.filter((todo: Todo) => {
@@ -228,7 +232,7 @@ const structuredSelector = createStructuredSelector({
 });
 */
 
-const mapStateToProps = (state: AppState) => {
+const mapStateToProps = (state: CompState) => {
   return {
     todos: state.todos
   }

@@ -7,7 +7,6 @@ export default function filterReducer(state = initialState, action: ActionDispat
         case ActionType.GET_FILTER:
             return state;
         case ActionType.FILTER:
-            console.log(state);
             if(action.filter) {
                 return action.filter;
             }
