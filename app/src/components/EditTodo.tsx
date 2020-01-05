@@ -71,11 +71,11 @@ class EditTodo extends React.Component<MatchProps, DefState> {
         }
         throw new Error("Network response error.");
       })
+      .catch((error: Error) => console.log(error.message))
       .then(todoJson => {
         return dispatch({ type: ActionType.EDIT, todoData: todoJson });
       })
-      .then(() => this.props.history.push(`/todos`))
-      .catch((error: Error) => console.log(error.message));
+      .then(() => this.props.history.push(`/todos`));
   }
 
   /* Form for user to fill. */

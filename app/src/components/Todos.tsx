@@ -40,10 +40,10 @@ class Todos extends React.Component<DefProps, IState> {
         }
         throw new Error("Network response error.");
       })
+      .catch(() => this.props.history.push("/"))
       .then(todoJson => {
         return dispatch({ type: ActionType.INIT, todoArray: todoJson });
-      })
-      .catch(() => this.props.history.push("/"));
+      });
   }
 
   /* When clicked, calls the DELETE method of /todos/:id to invoke the DESTROY controller action. */
@@ -66,11 +66,11 @@ class Todos extends React.Component<DefProps, IState> {
         }
         throw new Error("Network response error.");
       })
+      .catch((error: Error) => console.log(error.message))
       .then(todoJson => {
         return dispatch({ type: ActionType.DELETE, todoData: todoJson });
       })
-      .then(() => window.location.reload())
-      .catch((error: Error) => console.log(error.message));
+      .then(() => window.location.reload());
   }
 
   /* Handles filter search. */
@@ -104,11 +104,11 @@ class Todos extends React.Component<DefProps, IState> {
         }
         throw new Error("Network response error.");
       })
+      .catch((error: Error) => console.log(error.message))
       .then(todoJson => {
         return dispatch({ type: ActionType.TOGGLE, todoData: todoJson });
       })
-      .then(response => window.location.reload())
-      .catch((error: Error) => console.log(error.message));
+      .then(response => window.location.reload());
   }
 
   /* View of todo list. Renders alternate screen when no todos are found. */
