@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import * as Moment from 'moment';
 import update from "immutability-helper";
 
-import { ActionType, ActionDispatch, Todo, DefState, MatchProps, AppState } from '../constants';
+import { ActionType, ActionDispatch, Todo, DefState, MatchProps, CompState } from '../constants';
 
 
 class EditTodo extends React.Component<MatchProps, DefState> {
@@ -36,8 +36,8 @@ class EditTodo extends React.Component<MatchProps, DefState> {
     } = this.props;
     const { dispatch } = this.props;
     dispatch({ type: ActionType.GET });
-    const index = this.props.todos.findIndex(todo => todo.id.toString() === id!.toString());
-    this.setState({ todo: this.props.todos[index] })
+    const index = this.props.todos.todos.findIndex(todo => todo.id.toString() === id!.toString());
+    this.setState({ todo: this.props.todos.todos[index] })
   }
 
   /* When data field changes, update state accordingly. */
@@ -147,7 +147,7 @@ class EditTodo extends React.Component<MatchProps, DefState> {
   }
 }
 
-const mapStateToProps = (state: AppState) => {
+const mapStateToProps = (state: CompState) => {
   return {
     todos: state.todos
   }

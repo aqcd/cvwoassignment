@@ -14,8 +14,10 @@ export interface DefState {
     todo: Todo;
 }
 
+/* Somehow cannot be refactored without causing a TypeError... (same for MatchProps) */
 export interface DefProps {
-    todos: Todo[];
+    todos: TodoState;
+    todosFilter: FilterState;
     dispatch: Function;
     history: History<LocationState>;
 }
@@ -25,13 +27,14 @@ interface MatchParams {
 }
 
 export interface MatchProps extends RouteComponentProps<MatchParams> {
-    todos: Todo[];
+    todos: TodoState;
+    todosFilter: FilterState;
     dispatch: Function;
     history: History<LocationState>;
 }
 
 export enum ActionType {
-    INIT, GET, ADD, EDIT, DELETE, TOGGLE
+    INIT, GET, ADD, EDIT, DELETE, TOGGLE, FILTER, GET_FILTER
 }
 
 export enum TodosFilter {
@@ -41,13 +44,23 @@ export enum TodosFilter {
 export interface ActionDispatch {
   type: ActionType,
   todoData?: Todo,
-  todoArray?: Todo[]
+  todoArray?: Todo[],
+  filter?: TodosFilter
 }
 
 export interface store {
 
 }
 
-export interface AppState {
+export interface TodoState {
     todos: Todo[]
+}
+
+export interface FilterState {
+    todosFilter: TodosFilter
+}
+
+export interface CompState {
+    todos: TodoState
+    filter: FilterState
 }
