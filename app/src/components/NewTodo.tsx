@@ -1,32 +1,18 @@
 /* Supports creation of new Todos. */
 
 import * as React from "react";
-import { History, LocationState } from "history";
+import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
 
-interface NewTodoProps {
-    history: History<LocationState>;
-}
+import update from "immutability-helper";
 
-interface NewTodoState {
-    name: string;
-    by: Date;
-    tag: string;
-    details?: string;
-    completed: boolean;
-}
+import { ActionType, ActionDispatch, Todo, DefState, DefProps } from '../constants';
 
-class NewTodo extends React.Component<NewTodoProps, NewTodoState> {
-  constructor(props: NewTodoProps) {
+class NewTodo extends React.Component<DefProps, DefState> {
+  constructor(props: DefProps) {
     super(props);
     /* Set default state of empty. */
-    this.state  = {
-      name: "",
-      by: new Date(),
-      tag: "",
-      details: "",
-      completed: false
-    };
+    this.state = { todo: { id: -1, name:"", by:new Date(), tag:"", completed: false } };
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -41,14 +27,15 @@ class NewTodo extends React.Component<NewTodoProps, NewTodoState> {
 
   /* When data field changes, update state accordingly. */
   onChange = (field: string) => (event: React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ [field]: event.target.value } as Pick<NewTodoState, any>);
+    this.setState({ todo: update(this.state.todo, { [field]: { $set: event.target.value }})});
   }
 
   /* When submitted, calls the POST method of /todos to invoke the CREATE controller action. */
   onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const url = "/todos";
-    const { name, by, tag, details, completed } = this.state;
+    const { dispatch } = this.props;
+    const { name, by, tag, details, completed } = this.state.todo;
     if (name.length == 0 || tag.length == 0)
       return;
     const body = { name, by, tag, details, completed };
@@ -68,7 +55,10 @@ class NewTodo extends React.Component<NewTodoProps, NewTodoState> {
         }
         throw new Error("Network response error.");
       })
-      .then(response => this.props.history.push(`/todos`))
+      .then(todoJson => {
+        return dispatch({ type: ActionType.ADD, todoArray: todoJson });
+      })
+      .then(() => this.props.history.push(`/todos`))
       .catch((error: Error) => console.log(error.message));
   }
 
@@ -137,4 +127,4 @@ class NewTodo extends React.Component<NewTodoProps, NewTodoState> {
 
 }
 
-export default NewTodo;
+export default connect()(NewTodo);

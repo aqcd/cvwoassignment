@@ -1,37 +1,27 @@
 /* Supports viewing and deletion of Todos. */
 
 import * as React from "react";
-import { History, LocationState } from "history";
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 import { Link } from "react-router-dom";
 
 import * as Moment from 'moment';
 
-interface TodoProps {
-    history: History<LocationState>;
-}
+import { ActionType, ActionDispatch, Todo, TodosFilter, DefProps, AppState } from '../constants';
 
-interface Todo {
-    id: number;
-    name: string;
-    by: Date;
-    tag: string;
-    details?: string;
-    completed: boolean;
-}
-
-interface TodoState {
+interface IState {
+    todosFilter: TodosFilter;
     filterName: string;
     filterTag: string;
-    todos: Todo[];
 }
 
-class Todos extends React.Component<TodoProps, TodoState> {
-  constructor(props: TodoProps) {
+class Todos extends React.Component<DefProps, IState> {
+  constructor(props: DefProps) {
     super(props);
     this.state = {
+      todosFilter: TodosFilter.All,
       filterName: "",
-      filterTag: "",
-      todos: []
+      filterTag: ""
     };
     this.handleNameSearchChange = this.handleNameSearchChange.bind(this);
     this.handleTagSearchChange = this.handleTagSearchChange.bind(this);
@@ -42,6 +32,7 @@ class Todos extends React.Component<TodoProps, TodoState> {
   /* Fetch data of all todos to populate table accordingly. */
   componentDidMount() {
     const url = "/todos";
+    const { dispatch } = this.props;
     fetch(url)
       .then(response => {
         if (response.ok) {
@@ -49,13 +40,16 @@ class Todos extends React.Component<TodoProps, TodoState> {
         }
         throw new Error("Network response error.");
       })
-      .then(response => this.setState({ todos: response }))
+      .then(todoJson => {
+        return dispatch({ type: ActionType.INIT, todoArray: todoJson });
+      })
       .catch(() => this.props.history.push("/"));
   }
 
   /* When clicked, calls the DELETE method of /todos/:id to invoke the DESTROY controller action. */
   deleteTodo(todo: Todo) {
     const url = `/todos/` + todo.id;
+    const { dispatch } = this.props;
     const token = document.querySelector<HTMLInputElement>('meta[name="csrf-token"]')!.getAttribute('content');
     const parsedToken = token == null ? "" : token;
     let headers = new Headers();
@@ -71,6 +65,9 @@ class Todos extends React.Component<TodoProps, TodoState> {
           return response.json();
         }
         throw new Error("Network response error.");
+      })
+      .then(todoJson => {
+        return dispatch({ type: ActionType.DELETE, todoData: todoJson });
       })
       .then(() => window.location.reload())
       .catch((error: Error) => console.log(error.message));
@@ -88,6 +85,7 @@ class Todos extends React.Component<TodoProps, TodoState> {
   /* Toggles complete state of todo. */
   toggleComplete(todo: Todo) {
     const url = '/todos/' + todo.id;
+    const { dispatch } = this.props;
     const completed = !todo.completed;
     var body = { completed };
     const token = document.querySelector<HTMLInputElement>('meta[name="csrf-token"]')!.getAttribute('content');
@@ -106,13 +104,17 @@ class Todos extends React.Component<TodoProps, TodoState> {
         }
         throw new Error("Network response error.");
       })
+      .then(todoJson => {
+        return dispatch({ type: ActionType.TOGGLE, todoData: todoJson });
+      })
       .then(response => window.location.reload())
       .catch((error: Error) => console.log(error.message));
   }
 
   /* View of todo list. Renders alternate screen when no todos are found. */
   render() {
-    const { filterName, filterTag, todos } = this.state;
+    const { filterName, filterTag, todosFilter } = this.state;
+    const { todos } = this.props;
     const lowerFilterName = filterName.toLowerCase();
     const lowerFilterTag = filterTag.toLowerCase();
     const filteredTodos = todos.filter((todo: Todo) => {
@@ -142,7 +144,7 @@ class Todos extends React.Component<TodoProps, TodoState> {
                 <button type="button" className="btn custom-button" onClick={() => this.toggleComplete(todo)}> Toggle </button>
               </div>
           </div>
-          {todo.details &&
+          {todo.details && todo.details != "No details given." &&
               <div>
                 <p>{todo.details}</p>
               </div>
@@ -199,4 +201,16 @@ class Todos extends React.Component<TodoProps, TodoState> {
   }
 }
 
-export default Todos;
+/*
+const structuredSelector = createStructuredSelector({
+    todos: state => state.todos
+});
+*/
+
+const mapStateToProps = (state: AppState) => {
+  return {
+    todos: state.todos
+  }
+};
+
+export default connect(mapStateToProps)(Todos);

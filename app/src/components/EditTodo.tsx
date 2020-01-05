@@ -1,40 +1,20 @@
 /* Supports editing of Todos. */
 
 import * as React from "react";
-import { History, LocationState } from "history";
+import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
-import { BrowserRouter as Router, Route, RouteComponentProps } from "react-router-dom";
 
 import * as Moment from 'moment';
-
 import update from "immutability-helper";
 
-interface MatchParams {
-    id?: string;
-}
+import { ActionType, ActionDispatch, Todo, DefState, MatchProps, AppState } from '../constants';
 
-interface EditTodoProps extends RouteComponentProps<MatchParams> {
-    history: History<LocationState>;
-}
 
-interface Todo {
-    id?: number;
-    name: string;
-    by: Date;
-    tag: string;
-    details?: string;
-    completed: boolean;
-}
-
-interface EditTodoState {
-    todo: Todo;
-}
-
-class EditTodo extends React.Component<EditTodoProps, EditTodoState> {
-  constructor(props: EditTodoProps) {
+class EditTodo extends React.Component<MatchProps, DefState> {
+  constructor(props: MatchProps) {
     super(props);
     /* Set default state of empty. */
-    this.state = { todo: { name:"", by:new Date(), tag:"", completed: false } };
+    this.state = { todo: { id: -1, name:"", by:new Date(), tag:"", completed: false } };
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -54,28 +34,23 @@ class EditTodo extends React.Component<EditTodoProps, EditTodoState> {
         params: { id }
       }
     } = this.props;
-      const url = `/todos/${id}`;
-    fetch(url)
-      .then(response => {
-        if (response.ok) {
-          return response.json();
-        }
-        throw new Error("Network response error.");
-      })
-      .then(response => this.setState({ todo: response }))
-      .catch(() => this.props.history.push("/todos"));
+    const { dispatch } = this.props;
+    dispatch({ type: ActionType.GET });
+    const index = this.props.todos.findIndex(todo => todo.id.toString() === id!.toString());
+    this.setState({ todo: this.props.todos[index] })
   }
 
   /* When data field changes, update state accordingly. */
   onChange = (field: string) => (event: React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ todo: update(this.state.todo, { [field]: { $set: event.target.value }})});
-    /* this.setState({ [field]: event.target.value } as Pick<EditTodoState, any>); */
+    /* this.setState({ [field]: event.target.value } as Pick<DefState, any>); */
   }
 
   /* When submitted, calls the PUT method of /todos/:id to invoke the UPDATE controller action. */
   onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const url = '/todos/' + this.state.todo.id;
+    const { dispatch } = this.props;
     const { name, by, tag, details } = this.state.todo;
     if (name.length == 0 || tag.length == 0)
       return;
@@ -96,7 +71,10 @@ class EditTodo extends React.Component<EditTodoProps, EditTodoState> {
         }
         throw new Error("Network response error.");
       })
-      .then(response => this.props.history.push(`/todos`))
+      .then(todoJson => {
+        return dispatch({ type: ActionType.EDIT, todoData: todoJson });
+      })
+      .then(() => this.props.history.push(`/todos`))
       .catch((error: Error) => console.log(error.message));
   }
 
@@ -167,7 +145,12 @@ class EditTodo extends React.Component<EditTodoProps, EditTodoState> {
       </div>
     );
   }
-
 }
 
-export default EditTodo;
+const mapStateToProps = (state: AppState) => {
+  return {
+    todos: state.todos
+  }
+};
+
+export default connect(mapStateToProps)(EditTodo);
