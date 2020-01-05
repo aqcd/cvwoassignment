@@ -35,9 +35,7 @@ export enum ActionType {
 }
 
 export enum TodosFilter {
-    All = '',
-    Completed = 'completed',
-    Incomplete = 'incomplete'
+    ALL, DONE, ACTIVE
 }
 
 export interface ActionDispatch {
