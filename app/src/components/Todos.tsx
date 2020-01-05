@@ -19,12 +19,13 @@ class Todos extends React.Component<DefProps, IState> {
   constructor(props: DefProps) {
     super(props);
     this.state = {
-      todosFilter: TodosFilter.All,
+      todosFilter: TodosFilter.ALL,
       filterName: "",
       filterTag: ""
     };
     this.handleNameSearchChange = this.handleNameSearchChange.bind(this);
     this.handleTagSearchChange = this.handleTagSearchChange.bind(this);
+    this.handleTodoFilterChange = this.handleTodoFilterChange.bind(this);
     this.toggleComplete = this.toggleComplete.bind(this);
     this.deleteTodo = this.deleteTodo.bind(this);
   }
@@ -82,6 +83,10 @@ class Todos extends React.Component<DefProps, IState> {
     this.setState({ filterTag : event.target.value });
   };
 
+  handleTodoFilterChange(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    this.setState({ todosFilter : (event.target as HTMLButtonElement).value } as Pick<IState, any>);
+  };
+
   /* Toggles complete state of todo. */
   toggleComplete(todo: Todo) {
     const url = '/todos/' + todo.id;
@@ -117,10 +122,19 @@ class Todos extends React.Component<DefProps, IState> {
     const { todos } = this.props;
     const lowerFilterName = filterName.toLowerCase();
     const lowerFilterTag = filterTag.toLowerCase();
-    const filteredTodos = todos.filter((todo: Todo) => {
+    const filteredByCompletionTodos = todos.filter((todo: Todo) => {
+        if (todosFilter == TodosFilter.DONE) {
+            return todo.completed;
+        } else if (todosFilter == TodosFilter.ACTIVE) {
+            return !todo.completed;
+        } else {
+            return true;
+        }
+    });
+    const filteredByCompletionAndSearchTodos = filteredByCompletionTodos.filter((todo: Todo) => {
         return todo.tag.toLowerCase().includes(lowerFilterTag) && todo.name.toLowerCase().includes(lowerFilterName);
     });
-    const allTodos = filteredTodos.map((todo: Todo, index: number) => (
+    const allTodos = filteredByCompletionAndSearchTodos.map((todo: Todo, index: number) => (
       <div key={index} className="col-md-12">
         <div className={todo.completed ? "card card-body complete b-12" : Moment().isAfter(Moment(todo.by), 'day') ?
                 "card card-body overdue b-12" : "card card-body mb-12"}>
@@ -179,16 +193,23 @@ class Todos extends React.Component<DefProps, IState> {
                     Create New Todo
                   </Link>
                 </div>
-                <div className="text-left mb-3 col-md-3">
+                <div className="text-left mb-3 col-md-2">
                     <Link to="/" className="btn custom-button">
                       Home
                     </Link>
                 </div>
-                <div className="text-left mb-3 col-md-3">
+                <div className="text-left mb-3 col-md-2">
                     <input value={filterName} placeholder="Search by Name" name="filterName" onChange={this.handleNameSearchChange}/>
                 </div>
-                <div className="text-left mb-3 col-md-3">
+                <div className="text-left mb-3 col-md-2">
                     <input value={filterTag} placeholder="Search by Tag" name="filterTag" onChange={this.handleTagSearchChange}/>
+                </div>
+                <div className="text-right mb-3 col-md-3">
+                    <div className="btn-group">
+                        <button type="button" className="btn custom-button" onClick={this.handleTodoFilterChange} value={TodosFilter.ACTIVE}> Active </button>
+                        <button type="button" className="btn custom-button" onClick={this.handleTodoFilterChange} value={TodosFilter.DONE}> Done </button>
+                        <button type="button" className="btn custom-button" onClick={this.handleTodoFilterChange} value={TodosFilter.ALL}> All </button>
+                    </div>
                 </div>
             </div>
             <div className="row">
