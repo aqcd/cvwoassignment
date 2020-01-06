@@ -47,8 +47,7 @@ class Todos extends React.Component<DefProps, IState> {
       .then(todoJson => {
         return dispatch({ type: ActionType.INIT, todoArray: todoJson });
       })
-      .then(() => dispatch({ type: ActionType.GET_FILTER }))
-      .then(() => this.setState({ todosFilter: this.props.filterState } as Pick<IState, any>));
+      .then(() => dispatch({ type: ActionType.GET_FILTER }));
   }
 
   // When clicked, calls the DELETE method of /todos/:id to invoke the DESTROY controller action, then dispatches data to Redux store for deletion.
