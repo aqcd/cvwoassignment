@@ -10,8 +10,8 @@
   Todo.create(
     name: "Todo #{i + 1}",
     by: DateTime.new(2020, 12, 31),
-    tag: 'Example',
-    details: 'Sample Todo'
+    tag_list: 'Example',
+    details: 'Sample Todo',
     completed: false
   )
 end

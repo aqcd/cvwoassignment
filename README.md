@@ -23,6 +23,11 @@ Matriculation: A0201495J
     ```
     $ yarn install
     ```
+
+1. Install gems.
+    ```
+    $ bundle
+    ```
    
 1. Create database.
     ```

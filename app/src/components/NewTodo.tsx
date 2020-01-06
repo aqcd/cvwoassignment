@@ -13,7 +13,7 @@ class NewTodo extends React.Component<DefProps, DefState> {
     super(props);
 
     // Initialise default state of empty.
-    this.state = { todo: { id: -1, name:"", by:new Date(), tag:"", completed: false } };
+    this.state = { todo: { id: -1, name:"", by:new Date(), tag_list:"", completed: false } };
 
     // Bind actions.
     this.onChange = this.onChange.bind(this);
@@ -37,10 +37,12 @@ class NewTodo extends React.Component<DefProps, DefState> {
     event.preventDefault();
     const url = "/todos";
     const { dispatch } = this.props;
-    const { name, by, tag, details, completed } = this.state.todo;
-    if (name.length == 0 || tag.length == 0)
+    const { name, by, tag_list, details, completed } = this.state.todo;
+    if (name.length == 0)
       return;
-    const body = { name, by, tag, details, completed };
+    const body = { name, by, tag_list, details, completed };
+    console.log(body);
+    console.log(tag_list);
     const token = document.querySelector<HTMLInputElement>('meta[name="csrf-token"]')!.getAttribute('content');
     const parsedToken = token == null ? "" : token;
     let headers = new Headers();
@@ -97,14 +99,14 @@ class NewTodo extends React.Component<DefProps, DefState> {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="todoTag">Tag</label>
+                <label htmlFor="todoTag">Tags (separate by comma)</label>
                 <input
                   type="text"
-                  name="tag"
+                  name="tag_list"
                   id="todoTag"
                   className="form-control"
                   required
-                  onChange={this.onChange('tag')}
+                  onChange={this.onChange('tag_list')}
                 />
               </div>
               <label htmlFor="todoDetails">Details (Optional)</label>

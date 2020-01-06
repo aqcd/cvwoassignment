@@ -136,7 +136,7 @@ class Todos extends React.Component<DefProps, IState> {
         }
     });
     const filteredByCompletionAndSearchTodos = filteredByCompletionTodos.filter((todo: Todo) => {
-        return todo.tag.toLowerCase().includes(lowerFilterTag) && todo.name.toLowerCase().includes(lowerFilterName);
+        return todo.tag_list.toString().toLowerCase().includes(lowerFilterTag) && todo.name.toLowerCase().includes(lowerFilterName);
     });
     const allTodos = filteredByCompletionAndSearchTodos.map((todo: Todo, index: number) => (
       <div key={index} className="col-md-12">
@@ -150,7 +150,7 @@ class Todos extends React.Component<DefProps, IState> {
                 <p>by: {Moment(todo.by).format('DD MMM YYYY')}</p>
               </div>
               <div className="col-md-3">
-                <p>Tag: {todo.tag} </p>
+                <p>Tags: {todo.tag_list.toString().replace(/,/g, ", ")} </p>
               </div>
               <div className="col-md-1">
                 <Link to={`/todo/${todo.id}/edit`} className="btn custom-button"> Modify </Link>

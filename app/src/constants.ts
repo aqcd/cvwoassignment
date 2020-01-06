@@ -7,7 +7,7 @@ export interface Todo {
     id: number;
     name: string;
     by: Date;
-    tag: string;
+    tag_list: string | string[];
     details?: string;
     completed: boolean;
 }
