@@ -10,7 +10,6 @@ import * as Moment from 'moment';
 import { ActionType, ActionDispatch, Todo, TodosFilter, DefProps, CompState } from '../constants';
 
 interface IState {
-    todosFilter: TodosFilter,
     filterName: string;
     filterTag: string;
 }
@@ -19,7 +18,6 @@ class Todos extends React.Component<DefProps, IState> {
   constructor(props: DefProps) {
     super(props);
     this.state = {
-      todosFilter: TodosFilter.ALL,
       filterName: "",
       filterTag: ""
     };
@@ -87,7 +85,7 @@ class Todos extends React.Component<DefProps, IState> {
   handleTodoFilterChange(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     const { dispatch } = this.props;
     dispatch({ type: ActionType.FILTER, filter: (event.target as HTMLButtonElement).value });
-    this.setState({ todosFilter : (event.target as HTMLButtonElement).value } as Pick<IState, any>);
+    /*this.setState({ todosFilter : (event.target as HTMLButtonElement).value } as Pick<IState, any>);*/
   };
 
   /* Toggles complete state of todo. */
@@ -120,14 +118,15 @@ class Todos extends React.Component<DefProps, IState> {
 
   /* View of todo list. Renders alternate screen when no todos are found. */
   render() {
-    const { filterName, filterTag, todosFilter } = this.state;
+    const { filterName, filterTag } = this.state;
     const { todos } = this.props.todoState;
+    const { filterState } = this.props;
     const lowerFilterName = filterName.toLowerCase();
     const lowerFilterTag = filterTag.toLowerCase();
     const filteredByCompletionTodos = todos.filter((todo: Todo) => {
-        if (todosFilter == TodosFilter.DONE) {
+        if (filterState.valueOf() == TodosFilter.DONE.valueOf()) {
             return todo.completed;
-        } else if (todosFilter == TodosFilter.ACTIVE) {
+        } else if (filterState.valueOf() == TodosFilter.ACTIVE.valueOf()) {
             return !todo.completed;
         } else {
             return true;
