@@ -71,9 +71,8 @@ class Todos extends React.Component<DefProps, IState> {
       })
       .catch((error: Error) => console.log(error.message))
       .then(todoJson => {
-        return dispatch({ type: ActionType.DELETE, todoData: todoJson });
-      })
-      .then(response => window.location.reload());
+        return dispatch({ type: ActionType.DELETE, todoData: todo });
+      });
   }
 
   /* Handles filter search. */
@@ -115,9 +114,8 @@ class Todos extends React.Component<DefProps, IState> {
       })
       .catch((error: Error) => console.log(error.message))
       .then(todoJson => {
-        return dispatch({ type: ActionType.TOGGLE, todoData: todoJson });
-      })
-      .then(response => window.location.reload());
+        return dispatch({ type: ActionType.TOGGLE, todoData: todo });
+      });
   }
 
   /* View of todo list. Renders alternate screen when no todos are found. */
