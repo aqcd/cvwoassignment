@@ -1,3 +1,6 @@
+// Reducer for Todos. Currently supports initialisation (as empty array) and CRUD methods.
+// Modify when more action types are needed.
+
 import { ActionType, ActionDispatch, TodoState, Todo } from '../constants';
 
 const initialState: TodoState = { todos: [] };

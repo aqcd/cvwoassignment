@@ -1,4 +1,4 @@
-/* Supports creation of new Todos. */
+// Supports creation of new Todos.
 
 import * as React from "react";
 import { connect } from 'react-redux';
@@ -11,9 +11,11 @@ import { ActionType, ActionDispatch, Todo, DefState, DefProps } from '../constan
 class NewTodo extends React.Component<DefProps, DefState> {
   constructor(props: DefProps) {
     super(props);
-    /* Set default state of empty. */
+
+    // Initialise default state of empty.
     this.state = { todo: { id: -1, name:"", by:new Date(), tag:"", completed: false } };
 
+    // Bind actions.
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.stripHtmlEntities = this.stripHtmlEntities.bind(this);
@@ -25,12 +27,12 @@ class NewTodo extends React.Component<DefProps, DefState> {
       .replace(/>/g, "&gt;");
   }
 
-  /* When data field changes, update state accordingly. */
+  // When data field changes, update state accordingly.
   onChange = (field: string) => (event: React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ todo: update(this.state.todo, { [field]: { $set: event.target.value }})});
   }
 
-  /* When submitted, calls the POST method of /todos to invoke the CREATE controller action. */
+  // When submitted, calls the POST method of /todos to invoke the CREATE controller action, then dispatches data to Redux store for addition.
   onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const url = "/todos";
@@ -62,7 +64,7 @@ class NewTodo extends React.Component<DefProps, DefState> {
       .then(() => this.props.history.push(`/todos`));
   }
 
-  /* Form for user to fill. */
+  // Form for user to fill.
   render() {
     return (
       <div className="container mt-5">

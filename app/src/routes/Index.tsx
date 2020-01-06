@@ -1,4 +1,5 @@
-{/* Routes paths to respective components. */}
+// Initialises store to provide for application and routes paths to respective components.
+// Modify when new components are added to the application.
 
 import * as React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";

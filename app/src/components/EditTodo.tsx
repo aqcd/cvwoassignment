@@ -1,4 +1,4 @@
-/* Supports editing of Todos. */
+// Supports editing of Todos.
 
 import * as React from "react";
 import { connect } from 'react-redux';
@@ -9,13 +9,13 @@ import update from "immutability-helper";
 
 import { ActionType, ActionDispatch, Todo, DefState, MatchProps, CompState } from '../constants';
 
-
 class EditTodo extends React.Component<MatchProps, DefState> {
   constructor(props: MatchProps) {
     super(props);
-    /* Set default state of empty. */
+    // Initialise default state of empty.
     this.state = { todo: { id: -1, name:"", by:new Date(), tag:"", completed: false } };
 
+    // Bind actions.
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.stripHtmlEntities = this.stripHtmlEntities.bind(this);
@@ -27,7 +27,7 @@ class EditTodo extends React.Component<MatchProps, DefState> {
       .replace(/>/g, "&gt;");
   }
 
-  /* Fetch data of specific todo to pre-fill fields accordingly. */
+  // Fetch data of specific todo to pre-fill fields accordingly.
   componentDidMount() {
     const {
       match: {
@@ -40,13 +40,13 @@ class EditTodo extends React.Component<MatchProps, DefState> {
     this.setState({ todo: this.props.todoState.todos[index] })
   }
 
-  /* When data field changes, update state accordingly. */
+  // When data field changes, update state accordingly.
   onChange = (field: string) => (event: React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ todo: update(this.state.todo, { [field]: { $set: event.target.value }})});
     /* this.setState({ [field]: event.target.value } as Pick<DefState, any>); */
   }
 
-  /* When submitted, calls the PUT method of /todos/:id to invoke the UPDATE controller action. */
+  // When submitted, calls the PUT method of /todos/:id to invoke the UPDATE controller action, then dispatches data to Redux store for updating.
   onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const url = '/todos/' + this.state.todo.id;
@@ -78,7 +78,7 @@ class EditTodo extends React.Component<MatchProps, DefState> {
       .then(() => this.props.history.push(`/todos`));
   }
 
-  /* Form for user to fill. */
+  // Form for user to fill.
   render() {
     const { todo } = this.state;
     return (
@@ -147,6 +147,7 @@ class EditTodo extends React.Component<MatchProps, DefState> {
   }
 }
 
+// Maps component state to prop state.
 const mapStateToProps = (state: CompState) => {
   return {
     todoState: state.todos,
@@ -154,4 +155,5 @@ const mapStateToProps = (state: CompState) => {
   }
 };
 
+// Connect maps redux store state to component state.
 export default connect(mapStateToProps)(EditTodo);

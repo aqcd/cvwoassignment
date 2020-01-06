@@ -1,3 +1,6 @@
+// Reducer for filter type. Current supports initialisation (as ALL) and toggling.
+// Modify when more action types are needed.
+
 import { ActionType, ActionDispatch, FilterState, Todo, TodosFilter } from '../constants';
 
 const initialState: FilterState = { todosFilter: TodosFilter.ALL };

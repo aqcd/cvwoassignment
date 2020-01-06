@@ -1,3 +1,5 @@
+// Application Constants.
+
 import { History, LocationState } from "history";
 import { BrowserRouter as Router, Route, RouteComponentProps } from "react-router-dom";
 
@@ -45,10 +47,6 @@ export interface ActionDispatch {
   todoData?: Todo,
   todoArray?: Todo[],
   filter?: TodosFilter
-}
-
-export interface store {
-
 }
 
 export interface TodoState {

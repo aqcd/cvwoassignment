@@ -1,4 +1,4 @@
-/* Supports viewing and deletion of Todos. */
+// Supports viewing, toggling completion stage and deletion of Todos.
 
 import * as React from "react";
 import { connect } from 'react-redux';
@@ -17,10 +17,14 @@ interface IState {
 class Todos extends React.Component<DefProps, IState> {
   constructor(props: DefProps) {
     super(props);
+
+    // Initialise state.
     this.state = {
       filterName: "",
       filterTag: ""
     };
+
+    // Bind actions
     this.handleNameSearchChange = this.handleNameSearchChange.bind(this);
     this.handleTagSearchChange = this.handleTagSearchChange.bind(this);
     this.handleTodoFilterChange = this.handleTodoFilterChange.bind(this);
@@ -28,7 +32,7 @@ class Todos extends React.Component<DefProps, IState> {
     this.deleteTodo = this.deleteTodo.bind(this);
   }
 
-  /* Fetch data of all todos to populate table accordingly. */
+  // Fetch data of all todos, then dispatches data to Redux store for initialisation.
   componentDidMount() {
     const url = "/todos";
     const { dispatch } = this.props;
@@ -47,7 +51,7 @@ class Todos extends React.Component<DefProps, IState> {
       .then(() => this.setState({ todosFilter: this.props.filterState } as Pick<IState, any>));
   }
 
-  /* When clicked, calls the DELETE method of /todos/:id to invoke the DESTROY controller action. */
+  // When clicked, calls the DELETE method of /todos/:id to invoke the DESTROY controller action, then dispatches data to Redux store for deletion.
   deleteTodo(todo: Todo) {
     const url = `/todos/` + todo.id;
     const { dispatch } = this.props;
@@ -73,7 +77,7 @@ class Todos extends React.Component<DefProps, IState> {
       });
   }
 
-  /* Handles filter search. */
+  // Handles filter search by name, tag and completion stage.
   handleNameSearchChange(event: React.ChangeEvent<HTMLInputElement>) {
     this.setState({ filterName : event.target.value });
   };
@@ -88,7 +92,7 @@ class Todos extends React.Component<DefProps, IState> {
     /*this.setState({ todosFilter : (event.target as HTMLButtonElement).value } as Pick<IState, any>);*/
   };
 
-  /* Toggles complete state of todo. */
+  // Toggles completion state of todo, then dispatches data to Redux store for toggling.
   toggleComplete(todo: Todo) {
     const url = '/todos/' + todo.id;
     const { dispatch } = this.props;
@@ -116,7 +120,7 @@ class Todos extends React.Component<DefProps, IState> {
       });
   }
 
-  /* View of todo list. Renders alternate screen when no todos are found. */
+  // View of todo list with filtering. Renders alternate screen when no todos are found.
   render() {
     const { filterName, filterTag } = this.state;
     const { todos } = this.props.todoState;
@@ -223,12 +227,7 @@ class Todos extends React.Component<DefProps, IState> {
   }
 }
 
-/*
-const structuredSelector = createStructuredSelector({
-    todos: state => state.todos
-});
-*/
-
+// Maps component state to prop state.
 const mapStateToProps = (state: CompState) => {
   return {
     todoState: state.todos,
@@ -236,4 +235,5 @@ const mapStateToProps = (state: CompState) => {
   }
 };
 
+// Connect maps redux store state to component state.
 export default connect(mapStateToProps)(Todos);
