@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
 
   resources :todos
+  resources :tags, only: [:index, :show]
 
   root 'homepage#index'
   get '/*path' => 'homepage#index'

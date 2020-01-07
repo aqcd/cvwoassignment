@@ -38,6 +38,7 @@ class EditTodo extends React.Component<MatchProps, DefState> {
     dispatch({ type: ActionType.GET });
     const index = this.props.todoState.todos.findIndex(todo => todo.id.toString() === id!.toString());
     this.setState({ todo: this.props.todoState.todos[index] })
+    //this.setState({ todo: update(this.state.todo, { tag_list: { $set: this.props.todoState.todos[index].tag_list.toString().replace(/,/g, ", ") }})});
   }
 
   // When data field changes, update state accordingly.

@@ -4,14 +4,17 @@ import * as React from "react";
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { Link } from "react-router-dom";
+import Select from "react-select";
 
 import * as Moment from 'moment';
 
-import { ActionType, ActionDispatch, Todo, TodosFilter, DefProps, CompState } from '../constants';
+import { ActionType, ActionDispatch, TagOption, Tag, Todo, TodosFilter, DefProps, CompState } from '../constants';
 
 interface IState {
+    tags: Tag[];
+    tagOptions: [];
     filterName: string;
-    filterTag: string;
+    filterTag: TagOption;
 }
 
 class Todos extends React.Component<DefProps, IState> {
@@ -20,8 +23,10 @@ class Todos extends React.Component<DefProps, IState> {
 
     // Initialise state.
     this.state = {
+      tags: [],
+      tagOptions: [],
       filterName: "",
-      filterTag: ""
+      filterTag: { value:"", label:"Search by Tag" }
     };
 
     // Bind actions
@@ -48,6 +53,15 @@ class Todos extends React.Component<DefProps, IState> {
         return dispatch({ type: ActionType.INIT, todoArray: todoJson });
       })
       .then(() => dispatch({ type: ActionType.GET_FILTER }));
+    const tag_url = "/tags";
+    fetch(tag_url)
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error("Network response error.");
+      })
+      .then(json => this.setState( { tags: json }));
   }
 
   // When clicked, calls the DELETE method of /todos/:id to invoke the DESTROY controller action, then dispatches data to Redux store for deletion.
@@ -81,8 +95,8 @@ class Todos extends React.Component<DefProps, IState> {
     this.setState({ filterName : event.target.value });
   };
 
-  handleTagSearchChange(event: React.ChangeEvent<HTMLInputElement>) {
-    this.setState({ filterTag : event.target.value });
+  handleTagSearchChange(event: any) {
+    this.setState({ filterTag : event });
   };
 
   handleTodoFilterChange(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
@@ -125,7 +139,7 @@ class Todos extends React.Component<DefProps, IState> {
     const { todos } = this.props.todoState;
     const { filterState } = this.props;
     const lowerFilterName = filterName.toLowerCase();
-    const lowerFilterTag = filterTag.toLowerCase();
+    const lowerFilterTag = filterTag.value.toLowerCase();
     const filteredByCompletionTodos = todos.filter((todo: Todo) => {
         if (filterState.valueOf() == TodosFilter.DONE.valueOf()) {
             return todo.completed;
@@ -138,6 +152,7 @@ class Todos extends React.Component<DefProps, IState> {
     const filteredByCompletionAndSearchTodos = filteredByCompletionTodos.filter((todo: Todo) => {
         return todo.tag_list.toString().toLowerCase().includes(lowerFilterTag) && todo.name.toLowerCase().includes(lowerFilterName);
     });
+    const tagOptions: TagOption[] = this.state.tags.map(tag => ({ value: tag.name, label: tag.name }));
     const allTodos = filteredByCompletionAndSearchTodos.map((todo: Todo, index: number) => (
       <div key={index} className="col-md-12">
         <div className={todo.completed ? "card card-body complete b-12" : Moment().isAfter(Moment(todo.by), 'day') ?
@@ -175,6 +190,11 @@ class Todos extends React.Component<DefProps, IState> {
         <h4> No todos yet. <Link to="/todos/new">Create one?</Link> </h4>
       </div>
     );
+    const tagFilter = (
+      <div className="text-left mb-3 col-md-2">
+        <Select value={filterTag} options={tagOptions} name="filterTag" onChange={this.handleTagSearchChange}/>
+      </div>
+    );
 
     return (
       <>
@@ -205,9 +225,7 @@ class Todos extends React.Component<DefProps, IState> {
                 <div className="text-left mb-3 col-md-2">
                     <input value={filterName} placeholder="Search by Name" name="filterName" onChange={this.handleNameSearchChange}/>
                 </div>
-                <div className="text-left mb-3 col-md-2">
-                    <input value={filterTag} placeholder="Search by Tag" name="filterTag" onChange={this.handleTagSearchChange}/>
-                </div>
+                {tagFilter}
                 <div className="text-right mb-3 col-md-3">
                     <div className="btn-group">
                         <button type="button" className="btn custom-button" onClick={this.handleTodoFilterChange} value={TodosFilter.ACTIVE}> Active </button>

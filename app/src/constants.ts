@@ -12,6 +12,12 @@ export interface Todo {
     completed: boolean;
 }
 
+export interface Tag {
+    id: number;
+    name: string;
+    taggings_count: number;
+}
+
 export interface DefState {
     todo: Todo;
 }
@@ -32,6 +38,11 @@ export interface MatchProps extends RouteComponentProps<MatchParams> {
     filterState: FilterState;
     dispatch: Function;
     history: History<LocationState>;
+}
+
+export interface TagOption {
+    value: string;
+    label: string;
 }
 
 export enum ActionType {
