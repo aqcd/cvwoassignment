@@ -25,6 +25,8 @@ export interface DefState {
 export interface DefProps {
     todoState: TodoState;
     filterState: FilterState;
+    tagState: TagState;
+    tagFilterState: TagFilterState;
     dispatch: Function;
     history: History<LocationState>;
 }
@@ -46,7 +48,7 @@ export interface TagOption {
 }
 
 export enum ActionType {
-    INIT, GET, ADD, EDIT, DELETE, TOGGLE, FILTER, GET_FILTER
+    INIT, GET, ADD, EDIT, DELETE, TOGGLE, FILTER, GET_FILTER, TAG_FILTER, GET_TAG_FILTER, INIT_TAGS, GET_TAGS
 }
 
 export enum TodosFilter {
@@ -57,7 +59,9 @@ export interface ActionDispatch {
   type: ActionType,
   todoData?: Todo,
   todoArray?: Todo[],
-  filter?: TodosFilter
+  filter?: TodosFilter,
+  tagFilter?: TagOption,
+  tagArray?: Tag[]
 }
 
 export interface TodoState {
@@ -68,7 +72,17 @@ export interface FilterState {
     todosFilter: TodosFilter
 }
 
+export interface TagState {
+    tags: Tag[]
+}
+
+export interface TagFilterState {
+    tagOption: TagOption
+}
+
 export interface CompState {
     todos: TodoState
     filter: FilterState
+    tags: TagState
+    tagFilter: TagFilterState
 }

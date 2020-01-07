@@ -11,10 +11,8 @@ import * as Moment from 'moment';
 import { ActionType, ActionDispatch, TagOption, Tag, Todo, TodosFilter, DefProps, CompState } from '../constants';
 
 interface IState {
-    tags: Tag[];
     tagOptions: [];
     filterName: string;
-    filterTag: TagOption;
 }
 
 class Todos extends React.Component<DefProps, IState> {
@@ -23,10 +21,8 @@ class Todos extends React.Component<DefProps, IState> {
 
     // Initialise state.
     this.state = {
-      tags: [],
       tagOptions: [],
-      filterName: "",
-      filterTag: { value:"", label:"Search by Tag" }
+      filterName: ""
     };
 
     // Bind actions
@@ -61,7 +57,10 @@ class Todos extends React.Component<DefProps, IState> {
         }
         throw new Error("Network response error.");
       })
-      .then(json => this.setState( { tags: json }));
+      .then(tagJson => {
+        return dispatch({ type: ActionType.INIT_TAGS, tagArray: tagJson });
+      })
+      .then(() => dispatch({ type: ActionType.GET_TAG_FILTER }));
   }
 
   // When clicked, calls the DELETE method of /todos/:id to invoke the DESTROY controller action, then dispatches data to Redux store for deletion.
@@ -96,13 +95,15 @@ class Todos extends React.Component<DefProps, IState> {
   };
 
   handleTagSearchChange(event: any) {
-    this.setState({ filterTag : event });
+    //this.setState({ filterTag : event });
+    const { dispatch } = this.props;
+    dispatch({ type: ActionType.TAG_FILTER, tagFilter: { tagOption: event } });
   };
 
   handleTodoFilterChange(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     const { dispatch } = this.props;
     dispatch({ type: ActionType.FILTER, filter: (event.target as HTMLButtonElement).value });
-    /*this.setState({ todosFilter : (event.target as HTMLButtonElement).value } as Pick<IState, any>);*/
+    //this.setState({ todosFilter : (event.target as HTMLButtonElement).value } as Pick<IState, any>);
   };
 
   // Toggles completion state of todo, then dispatches data to Redux store for toggling.
@@ -135,11 +136,14 @@ class Todos extends React.Component<DefProps, IState> {
 
   // View of todo list with filtering. Renders alternate screen when no todos are found.
   render() {
-    const { filterName, filterTag } = this.state;
+    const { filterName } = this.state;
     const { todos } = this.props.todoState;
     const { filterState } = this.props;
+    const { tagState } = this.props;
+    const { tagFilterState } = this.props;
     const lowerFilterName = filterName.toLowerCase();
-    const lowerFilterTag = filterTag.value.toLowerCase();
+    const filterTagValue = tagFilterState.tagOption.value;
+    const lowerFilterTag = filterTagValue != "-All-" ? filterTagValue.toLowerCase() : "";
     const filteredByCompletionTodos = todos.filter((todo: Todo) => {
         if (filterState.valueOf() == TodosFilter.DONE.valueOf()) {
             return todo.completed;
@@ -152,7 +156,7 @@ class Todos extends React.Component<DefProps, IState> {
     const filteredByCompletionAndSearchTodos = filteredByCompletionTodos.filter((todo: Todo) => {
         return todo.tag_list.toString().toLowerCase().includes(lowerFilterTag) && todo.name.toLowerCase().includes(lowerFilterName);
     });
-    const tagOptions: TagOption[] = this.state.tags.map(tag => ({ value: tag.name, label: tag.name }));
+    const tagOptions: TagOption[] = tagState.tags.map(tag => ({ value: tag.name, label: tag.name }));
     const allTodos = filteredByCompletionAndSearchTodos.map((todo: Todo, index: number) => (
       <div key={index} className="col-md-12">
         <div className={todo.completed ? "card card-body complete b-12" : Moment().isAfter(Moment(todo.by), 'day') ?
@@ -192,7 +196,7 @@ class Todos extends React.Component<DefProps, IState> {
     );
     const tagFilter = (
       <div className="text-left mb-3 col-md-2">
-        <Select value={filterTag} options={tagOptions} name="filterTag" onChange={this.handleTagSearchChange}/>
+        <Select value={this.props.tagFilterState.tagOption} options={tagOptions} name="filterTag" onChange={this.handleTagSearchChange}/>
       </div>
     );
 
@@ -248,7 +252,9 @@ class Todos extends React.Component<DefProps, IState> {
 const mapStateToProps = (state: CompState) => {
   return {
     todoState: state.todos,
-    filterState: state.filter
+    filterState: state.filter,
+    tagState: state.tags,
+    tagFilterState: state.tagFilter
   }
 };
 
