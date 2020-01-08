@@ -6,7 +6,7 @@ import DatePicker from 'react-datepicker';
 
 const renderDatePicker = ({input, placeholder, defaultValue, meta: {touched, error} }) => (
   <div>
-        <DatePicker {...input} defaultValue={Moment()} dateFormat="dd/MM/YYYY" selected={input.value ? Moment(input.value) : null} />
+        <DatePicker {...input} defaultValue={new Date()} dateFormat="yyyy-MM-dd" />
         {touched && error && <span>{error}</span>}
   </div>
 );
