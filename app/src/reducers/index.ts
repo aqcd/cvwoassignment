@@ -7,13 +7,11 @@ import todos from './todos';
 import filter from './filter';
 import tags from './tags';
 import tagFilter from './tagFilter';
-import todoFormFilter from './todoForm';
 
 export default combineReducers({
     todos,
     filter,
     tags,
     tagFilter,
-    todoFormFilter,
     form: formReducer
 })

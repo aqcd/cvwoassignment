@@ -41,7 +41,10 @@ interface MatchParams {
 
 export interface MatchProps extends RouteComponentProps<MatchParams> {
     todoState: TodoState;
+    formState: FormState;
     filterState: FilterState;
+    tagState: TagState;
+    tagFilterState: TagFilterState;
     dispatch: Function;
     history: History<LocationState>;
 }
@@ -52,7 +55,7 @@ export interface TagOption {
 }
 
 export enum ActionType {
-    INIT, GET, ADD, EDIT, DELETE, TOGGLE, FILTER, GET_FILTER, TAG_FILTER, GET_TAG_FILTER, INIT_TAGS, GET_TAGS
+    INIT, GET, ADD, EDIT, DELETE, TOGGLE, FILTER, GET_FILTER, TAG_FILTER, GET_TAG_FILTER, INIT_TAGS, GET_TAGS, INIT_FORM
 }
 
 export enum TodosFilter {
@@ -70,6 +73,10 @@ export interface ActionDispatch {
 
 export interface TodoState {
     todos: Todo[]
+}
+
+export interface OneTodoState {
+    data?: any
 }
 
 export interface FormState {

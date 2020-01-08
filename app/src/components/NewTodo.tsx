@@ -23,8 +23,6 @@ class NewTodo extends React.Component<DefProps, EmptyState> {
     const { dispatch } = this.props;
     const { name, by, tag_list, details } = values;
     const completed = false;
-    if (name.length == 0)
-      return;
     const body = { name, by, tag_list, details, completed };
     const token = document.querySelector<HTMLInputElement>('meta[name="csrf-token"]')!.getAttribute('content');
     const parsedToken = token == null ? "" : token;
