@@ -2,8 +2,10 @@
 
 import * as React from 'react';
 import { reduxForm, Field } from 'redux-form';
+import * as Moment from 'moment';
+import DatePicker from '../util/datePicker';
 
-const newTodoForm = props => {
+const newTodoForm = (props:any) => {
     const { handleSubmit } = props;
     return (
         <form onSubmit={handleSubmit}>
@@ -18,13 +20,14 @@ const newTodoForm = props => {
             />
             <label htmlFor="todoBy">Do by</label>
             <Field
+              type="date"
               name="by"
-              component="input"
+              component={DatePicker}
               id="todoBy"
               className="form-control"
               required
             />
-            <label htmlFor="todoTag">Tags - separate by comma</label>
+            <label htmlFor="todoTag">Tags (separate by comma)</label>
             <Field
               type="text"
               name="tag_list"
@@ -40,10 +43,13 @@ const newTodoForm = props => {
               id="todoDetails"
               className="form-control"
             />
+            <button type="submit" className="btn custom-button mt-3">
+              Create Todo
+            </button>
         </form>
     );
 };
 
 export default reduxForm({
-    form: "newTodo";
+    form: "newTodo"
 })(newTodoForm);

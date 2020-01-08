@@ -14,5 +14,6 @@ export default combineReducers({
     filter,
     tags,
     tagFilter,
-    form: todoFormFilter
+    todoFormFilter,
+    form: formReducer
 })

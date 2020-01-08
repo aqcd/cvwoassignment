@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import update from "immutability-helper";
 
 import { ActionType, ActionDispatch, Todo, DefState, DefProps } from '../constants';
+import NewTodoForm from '../forms/newTodoForm';
 
 class NewTodo extends React.Component<DefProps, DefState> {
   constructor(props: DefProps) {
@@ -16,7 +17,7 @@ class NewTodo extends React.Component<DefProps, DefState> {
     this.state = { todo: { id: -1, name:"", by:new Date(), tag_list:"", completed: false } };
 
     // Bind actions.
-    this.onChange = this.onChange.bind(this);
+    //this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.stripHtmlEntities = this.stripHtmlEntities.bind(this);
   }
@@ -26,14 +27,16 @@ class NewTodo extends React.Component<DefProps, DefState> {
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;");
   }
-
+/*
   // When data field changes, update state accordingly.
   onChange = (field: string) => (event: React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ todo: update(this.state.todo, { [field]: { $set: event.target.value }})});
-  }
+  }*/
 
   // When submitted, calls the POST method of /todos to invoke the CREATE controller action, then dispatches data to Redux store for addition.
-  onSubmit(event: React.FormEvent<HTMLFormElement>) {
+  onSubmit(values:any) {
+    console.log(values);
+  /*
     event.preventDefault();
     const url = "/todos";
     const { dispatch } = this.props;
@@ -63,7 +66,7 @@ class NewTodo extends React.Component<DefProps, DefState> {
       .then(todoJson => {
         return dispatch({ type: ActionType.ADD, todoArray: todoJson });
       })
-      .then(() => this.props.history.push(`/todos`));
+      .then(() => this.props.history.push(`/todos`));*/
   }
 
   // Form for user to fill.
@@ -75,54 +78,10 @@ class NewTodo extends React.Component<DefProps, DefState> {
             <h1 className="font-weight-normal mb-5">
               Add Todo
             </h1>
-            <form onSubmit={this.onSubmit}>
-              <div className="form-group">
-                <label htmlFor="todoName">Name</label>
-                <input
-                  type="text"
-                  name="name"
-                  id="todoName"
-                  className="form-control"
-                  required
-                  onChange={this.onChange('name')}
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="todoBy">Do by</label>
-                <input
-                  type="date"
-                  name="by"
-                  id="todoBy"
-                  className="form-control"
-                  required
-                  onChange={this.onChange('by')}
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="todoTag">Tags (separate by comma)</label>
-                <input
-                  type="text"
-                  name="tag_list"
-                  id="todoTag"
-                  className="form-control"
-                  required
-                  onChange={this.onChange('tag_list')}
-                />
-              </div>
-              <label htmlFor="todoDetails">Details (Optional)</label>
-              <textarea
-                name="details"
-                id="todoDetails"
-                className="form-control"
-                onChange={this.onChange('details')}
-              />
-              <button type="submit" className="btn custom-button mt-3">
-                Create Todo
-              </button>
-              <Link to="/todos" className="btn btn-link mt-3">
-                Back to Todo List
-              </Link>
-            </form>
+            <NewTodoForm onSubmit={this.onSubmit} />
+            <Link to="/todos" className="btn btn-link mt-3">
+              Back to Todo List
+            </Link>
           </div>
         </div>
       </div>
