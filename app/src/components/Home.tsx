@@ -9,7 +9,7 @@ export default () => (
       <div className="container">
         <h1 className="display-4">Todo Organiser</h1>
         <p className="lead"> This is an application that helps the user organise and keep track of their To-dos. </p>
-        <p className="lead"> Supports: basic CRUD operations, tagging </p>
+        <p className="lead"> Implemented: CRUD Operations, Tagging, TypeScript, Redux Stores, Redux Forms </p>
         <hr className="my-4" />
         <Link
           to="/todos"

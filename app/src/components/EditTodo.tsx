@@ -4,9 +4,6 @@ import * as React from "react";
 import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
 
-import * as Moment from 'moment';
-import update from "immutability-helper";
-
 import { ActionType, ActionDispatch, Todo, EmptyState, MatchProps, CompState } from '../constants';
 import EditTodoForm from '../forms/editTodoForm';
 
@@ -27,16 +24,7 @@ class EditTodo extends React.Component<MatchProps, EmptyState> {
     } = this.props;
     const { dispatch } = this.props;
     dispatch({ type: ActionType.GET });
-    //const index = this.props.todoState.todos.findIndex(todo => todo.id.toString() === id!.toString());
-    //dispatch({ type: ActionType.INIT_FORM, todoData: this.props.todoState.todos[index] })
-    //this.setState({ todo: update(this.state.todo, { tag_list: { $set: this.props.todoState.todos[index].tag_list.toString().replace(/,/g, ", ") }})});
   }
-
-  // When data field changes, update state accordingly.
-  /* onChange = (field: string) => (event: React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ todo: update(this.state.todo, { [field]: { $set: event.target.value }})});
-    /* this.setState({ [field]: event.target.value } as Pick<DefState, any>);
-  }*/
 
   // When submitted, calls the PUT method of /todos/:id to invoke the UPDATE controller action, then dispatches data to Redux store for updating.
   onSubmit(values:any) {
