@@ -18,12 +18,16 @@ export interface Tag {
     taggings_count: number;
 }
 
+export interface EmptyState {
+}
+
 export interface DefState {
     todo: Todo;
 }
 
 export interface DefProps {
     todoState: TodoState;
+    formState: FormState;
     filterState: FilterState;
     tagState: TagState;
     tagFilterState: TagFilterState;
@@ -69,10 +73,10 @@ export interface TodoState {
 }
 
 export interface FormState {
-    name: string,
-    by: Date,
-    tag_list: string | string[],
-    details?: string
+    name: string;
+    by: Date;
+    tag_list: string | string[];
+    details?: string;
 }
 
 export interface FilterState {

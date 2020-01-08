@@ -151,8 +151,7 @@ class EditTodo extends React.Component<MatchProps, DefState> {
 // Maps component state to prop state.
 const mapStateToProps = (state: CompState) => {
   return {
-    todoState: state.todos,
-    filterState: state.filter
+    todoState: state.todos
   }
 };
 

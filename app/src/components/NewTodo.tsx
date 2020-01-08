@@ -6,46 +6,26 @@ import { Link } from "react-router-dom";
 
 import update from "immutability-helper";
 
-import { ActionType, ActionDispatch, Todo, DefState, DefProps } from '../constants';
+import { ActionType, ActionDispatch, Todo, EmptyState, DefProps, CompState } from '../constants';
 import NewTodoForm from '../forms/newTodoForm';
 
-class NewTodo extends React.Component<DefProps, DefState> {
+class NewTodo extends React.Component<DefProps, EmptyState> {
   constructor(props: DefProps) {
     super(props);
 
-    // Initialise default state of empty.
-    this.state = { todo: { id: -1, name:"", by:new Date(), tag_list:"", completed: false } };
-
     // Bind actions.
-    //this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-    this.stripHtmlEntities = this.stripHtmlEntities.bind(this);
   }
-
-  stripHtmlEntities(str: string) {
-    return String(str)
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;");
-  }
-/*
-  // When data field changes, update state accordingly.
-  onChange = (field: string) => (event: React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ todo: update(this.state.todo, { [field]: { $set: event.target.value }})});
-  }*/
 
   // When submitted, calls the POST method of /todos to invoke the CREATE controller action, then dispatches data to Redux store for addition.
   onSubmit(values:any) {
-    console.log(values);
-  /*
-    event.preventDefault();
     const url = "/todos";
     const { dispatch } = this.props;
-    const { name, by, tag_list, details, completed } = this.state.todo;
+    const { name, by, tag_list, details } = values;
+    const completed = false;
     if (name.length == 0)
       return;
     const body = { name, by, tag_list, details, completed };
-    console.log(body);
-    console.log(tag_list);
     const token = document.querySelector<HTMLInputElement>('meta[name="csrf-token"]')!.getAttribute('content');
     const parsedToken = token == null ? "" : token;
     let headers = new Headers();
@@ -66,7 +46,7 @@ class NewTodo extends React.Component<DefProps, DefState> {
       .then(todoJson => {
         return dispatch({ type: ActionType.ADD, todoArray: todoJson });
       })
-      .then(() => this.props.history.push(`/todos`));*/
+      .then(() => this.props.history.push(`/todos`));
   }
 
   // Form for user to fill.
@@ -90,4 +70,12 @@ class NewTodo extends React.Component<DefProps, DefState> {
 
 }
 
-export default connect()(NewTodo);
+// Maps component state to prop state.
+const mapStateToProps = (state: CompState) => {
+  return {
+    formState: state.form
+  }
+};
+
+// Connect maps redux store state to component state.
+export default connect(mapStateToProps)(NewTodo);

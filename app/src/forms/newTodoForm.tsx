@@ -2,8 +2,6 @@
 
 import * as React from 'react';
 import { reduxForm, Field } from 'redux-form';
-import * as Moment from 'moment';
-import DatePicker from '../util/datePicker';
 
 const newTodoForm = (props:any) => {
     const { handleSubmit } = props;
@@ -22,7 +20,7 @@ const newTodoForm = (props:any) => {
             <Field
               type="date"
               name="by"
-              component={DatePicker}
+              component="input"
               id="todoBy"
               className="form-control"
               required
@@ -36,7 +34,7 @@ const newTodoForm = (props:any) => {
               className="form-control"
               required
             />
-            <label htmlFor="todoName">Name</label>
+            <label htmlFor="todoName">Details (Optional)</label>
             <Field
               name="details"
               component="input"
