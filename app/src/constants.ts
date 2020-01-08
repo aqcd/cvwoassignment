@@ -68,6 +68,13 @@ export interface TodoState {
     todos: Todo[]
 }
 
+export interface FormState {
+    name: string,
+    by: Date,
+    tag_list: string | string[],
+    details?: string
+}
+
 export interface FilterState {
     todosFilter: TodosFilter
 }
@@ -82,6 +89,7 @@ export interface TagFilterState {
 
 export interface CompState {
     todos: TodoState
+    form: FormState
     filter: FilterState
     tags: TagState
     tagFilter: TagFilterState
