@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
 import { Link } from "react-router-dom";
 import Select from "react-select";
 
@@ -95,7 +94,6 @@ class Todos extends React.Component<DefProps, IState> {
   };
 
   handleTagSearchChange(event: any) {
-    //this.setState({ filterTag : event });
     const { dispatch } = this.props;
     dispatch({ type: ActionType.TAG_FILTER, tagFilter: { tagOption: event } });
   };
@@ -103,7 +101,6 @@ class Todos extends React.Component<DefProps, IState> {
   handleTodoFilterChange(event: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     const { dispatch } = this.props;
     dispatch({ type: ActionType.FILTER, filter: (event.target as HTMLButtonElement).value });
-    //this.setState({ todosFilter : (event.target as HTMLButtonElement).value } as Pick<IState, any>);
   };
 
   // Toggles completion state of todo, then dispatches data to Redux store for toggling.
