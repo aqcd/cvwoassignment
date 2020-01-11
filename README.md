@@ -84,7 +84,7 @@ Matriculation: A0201495J
     ```
 
 ### Delete Container
-1. To remove container, first kill the container.
+1. To remove container, first kill the containers.
     ```
     docker rm $(docker ps -a -q) -f
     ```
