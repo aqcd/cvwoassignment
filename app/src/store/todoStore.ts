@@ -8,7 +8,8 @@ import logger from 'redux-logger';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 const todoStore = () => {
-    return createStore(reducer, composeWithDevTools(applyMiddleware(thunk, logger)))
+    return createStore(reducer, composeWithDevTools(applyMiddleware(thunk)))
+    //return createStore(reducer, composeWithDevTools(applyMiddleware(thunk, logger)))
 };
 
 export default todoStore;
