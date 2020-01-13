@@ -106,26 +106,3 @@ Matriculation: A0201495J
     docker volume ls
     ```
    should both return empty tables.
-
-### Hosting on Heroku
-1. Create heroku repository. (URL will be returned)
-    ```
-    heroku create
-    ```
-   
-1. Create git remote for heroku.
-    ```
-    git remote -v
-    ```
-   
-1. After committing code to git, run:
-    ```
-    git push heroku master
-    ```
-
-1. Migrate database.
-    ```
-    heroku run rake db:migrate
-    ```
-
-1. Go to URL given in step 1.
