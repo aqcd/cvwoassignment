@@ -268,3 +268,4 @@ build-iPhoneSimulator/
 # .rubocop-https?--*
 
 # End of https://www.gitignore.io/api/node,ruby,rails,linux,macos
+/node_modules

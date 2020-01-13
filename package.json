@@ -6,7 +6,7 @@
     "@rails/actioncable": "^6.0.0",
     "@rails/activestorage": "^6.0.0",
     "@rails/ujs": "^6.0.0",
-    "@rails/webpacker": "^4.2.2",
+    "@rails/webpacker": "4.2.2",
     "@types/react-dates": "^17.1.7",
     "activerecord": "^0.2.1",
     "babel-loader": "^8.0.6",
@@ -25,6 +25,7 @@
     "react-scripts": "^3.3.0",
     "react-select": "^3.0.8",
     "redux": "^4.0.5",
+    "redux-devtools-extension": "^2.13.8",
     "redux-form": "^8.2.6",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
@@ -51,8 +52,8 @@
     "@types/redux-form": "^8.2.0",
     "@types/redux-logger": "^3.0.7",
     "awesome-typescript-loader": "^5.2.1",
-    "redux-devtools-extension": "^2.13.8",
     "source-map-loader": "^0.2.4",
-    "webpack-cli": "^3.3.10"
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.10.1"
   }
 }
