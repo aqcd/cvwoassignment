@@ -8,8 +8,8 @@ Name: Shi Jing Lin
 
 Matriculation: A0201495J
 
-##Demo
-    https://peaceful-reef-56596.herokuapp.com/
+
+Demo: https://peaceful-reef-56596.herokuapp.com/
     
 ## Dependencies
 1. Ruby (>=2.6.5)
