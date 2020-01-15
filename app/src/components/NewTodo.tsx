@@ -66,7 +66,7 @@ class NewTodo extends React.Component<DefProps, EmptyState> {
 
 }
 
-// Maps component state to prop state.
+// Maps component state to prop state. Together with connect, maps redux store state to props.
 const mapStateToProps = (state: CompState) => {
   return {
     formState: state.form

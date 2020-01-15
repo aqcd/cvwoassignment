@@ -32,7 +32,7 @@ class Todos extends React.Component<DefProps, IState> {
     this.deleteTodo = this.deleteTodo.bind(this);
   }
 
-  // Fetch data of all todos, then dispatches data to Redux store for initialisation.
+  // Fetch data of all todos and tags, then dispatches data to Redux store for initialisation.
   componentDidMount() {
     const url = "/todos";
     const { dispatch } = this.props;
@@ -133,11 +133,14 @@ class Todos extends React.Component<DefProps, IState> {
 
   // View of todo list with filtering. Renders alternate screen when no todos are found.
   render() {
+    // Define consts.
     const { filterName } = this.state;
     const { todos } = this.props.todoState;
     const { filterState } = this.props;
     const { tagState } = this.props;
     const { tagFilterState } = this.props;
+
+    // Handles filtering.
     const lowerFilterName = filterName.toLowerCase();
     const filterTagValue = tagFilterState.tagOption.value;
     const lowerFilterTag = filterTagValue != "-All-" ? filterTagValue.toLowerCase() : "";
@@ -153,7 +156,11 @@ class Todos extends React.Component<DefProps, IState> {
     const filteredByCompletionAndSearchTodos = filteredByCompletionTodos.filter((todo: Todo) => {
         return todo.tag_list.toString().toLowerCase().includes(lowerFilterTag) && todo.name.toLowerCase().includes(lowerFilterName);
     });
+
+    // Maps tags to an input supported by react-select.
     const tagOptions: TagOption[] = tagState.tags.map(tag => ({ value: tag.name, label: tag.name }));
+
+    // Maps todos to visible data.
     const allTodos = filteredByCompletionAndSearchTodos.map((todo: Todo, index: number) => (
       <div key={index} className="col-md-12">
         <div className={todo.completed ? "card card-body complete b-12" : Moment().isAfter(Moment(todo.by), 'day') ?
@@ -186,11 +193,15 @@ class Todos extends React.Component<DefProps, IState> {
         </div>
       </div>
     ));
+
+    // Logic when there are no todos.
     const noTodo = (
       <div className="vw-100 vh-50 d-flex align-items-center justify-content-center">
         <h4> No todos yet. <Link to="/todos/new">Create one?</Link> </h4>
       </div>
     );
+
+    // Use react-select to implement tag filtering.
     const tagFilter = (
       <div className="text-left mb-3 col-md-2">
         <Select value={this.props.tagFilterState.tagOption} options={tagOptions} name="filterTag" onChange={this.handleTagSearchChange}/>
@@ -245,7 +256,7 @@ class Todos extends React.Component<DefProps, IState> {
   }
 }
 
-// Maps component state to prop state.
+// Maps component state to prop state. Together with connect, maps redux store state to props.
 const mapStateToProps = (state: CompState) => {
   return {
     todoState: state.todos,

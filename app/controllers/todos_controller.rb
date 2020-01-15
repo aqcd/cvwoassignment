@@ -1,4 +1,7 @@
-#Handles actions as defined by Controller-Actions in rails routes.
+# Handles actions as defined by Controller-Actions in rails routes.
+
+# This controls indexing, creation, updating, display and destruction of todos.
+# To check the appropriate URL, do rails routes in terminal.
 
 class TodosController < ApplicationController
   def index

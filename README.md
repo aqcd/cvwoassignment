@@ -57,6 +57,11 @@ Demo: https://peaceful-reef-56596.herokuapp.com/
     $ rails s --binding=127.0.0.1
     ```
 
+1. If terminal exits with "Server is already running", run
+    ```
+    $ rm -f tmp/pids/server.pid
+    ```
+
 1. Go to URL.
     ```
     http://localhost:3000/

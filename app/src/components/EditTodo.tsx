@@ -60,7 +60,7 @@ class EditTodo extends React.Component<MatchProps, EmptyState> {
       .then(() => this.props.history.push(`/todos`));
   }
 
-  // Form for user to fill.
+  // Form for user to fill. See EditTodoForm under ../forms/ for implementation.
   render() {
     const {
       match: {
@@ -86,7 +86,7 @@ class EditTodo extends React.Component<MatchProps, EmptyState> {
   }
 }
 
-// Maps component state to prop state.
+// Maps component state to prop state. Together with connect, maps redux store state to props.
 const mapStateToProps = (state: CompState) => {
   return {
     formState: state.form,

@@ -1,4 +1,6 @@
-#Handles actions as defined by Controller-Actions in rails routes.
+# Handles actions as defined by Controller-Actions in rails routes.
+
+# This controls indexing and display of tags, which is supported by the 'acts-as-taggable-on' gem.
 
 class TagsController < ApplicationController
   def index

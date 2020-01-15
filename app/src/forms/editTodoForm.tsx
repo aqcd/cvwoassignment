@@ -1,6 +1,4 @@
-// Redux form for new todo.
-
-// TODO: merge with newTodoForm via some form of currying?
+// Redux form for editing a todo.
 
 import * as React from 'react';
 import { connect } from 'react-redux';
